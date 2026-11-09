@@ -1,0 +1,112 @@
+/**
+ * Static, fictional seed data. Every person, phone number and e-mail here is
+ * invented: phones use the reserved 555-01xx range and e-mails use the
+ * reserved example.com domain.
+ */
+import type { Clinic, ConsultationType, Doctor, Integration } from "@/lib/domain/types";
+import { APP_CONFIG } from "@/lib/config";
+
+const currency = APP_CONFIG.currency;
+
+export const clinic: Clinic = {
+  id: "clinic_demo",
+  name: "Consultorio Herrera",
+  city: "Ciudad Demo",
+};
+
+export const doctor: Doctor = {
+  id: "doc_demo",
+  clinicId: clinic.id,
+  fullName: "Lucía Herrera Ortiz",
+  title: "Dra.",
+  specialty: "Medicina interna",
+  email: "lucia.herrera@example.com",
+  phone: "+1 555 0100",
+};
+
+export const consultationTypes: ConsultationType[] = [
+  {
+    id: "ct_first",
+    doctorId: doctor.id,
+    name: "Primera consulta",
+    durationMinutes: 45,
+    price: { amount: 8000, currency },
+    modality: "in_person",
+  },
+  {
+    id: "ct_followup",
+    doctorId: doctor.id,
+    name: "Consulta de seguimiento",
+    durationMinutes: 30,
+    price: { amount: 5500, currency },
+    modality: "in_person",
+  },
+  {
+    id: "ct_video",
+    doctorId: doctor.id,
+    name: "Teleconsulta",
+    durationMinutes: 30,
+    price: { amount: 5000, currency },
+    modality: "video",
+  },
+  {
+    id: "ct_results",
+    doctorId: doctor.id,
+    name: "Revisión de resultados",
+    durationMinutes: 15,
+    price: { amount: 3500, currency },
+    modality: "in_person",
+  },
+];
+
+export const integrations: Integration[] = [
+  {
+    id: "int_stripe",
+    name: "Stripe",
+    category: "payments",
+    description: "Cobros con tarjeta, Apple Pay y pagos a médicos mediante Stripe Connect.",
+    status: "planned",
+  },
+  {
+    id: "int_google_calendar",
+    name: "Google Calendar",
+    category: "scheduling",
+    description: "Sincroniza tu agenda de MedikOS con tu calendario personal.",
+    status: "planned",
+  },
+  {
+    id: "int_whatsapp",
+    name: "WhatsApp Business",
+    category: "communication",
+    description: "Confirmaciones y recordatorios de citas para tus pacientes.",
+    status: "planned",
+  },
+  {
+    id: "int_email",
+    name: "Correo electrónico",
+    category: "communication",
+    description: "Notificaciones automáticas de reserva, cambios y recibos.",
+    status: "planned",
+  },
+  {
+    id: "int_accounting",
+    name: "Contabilidad",
+    category: "accounting",
+    description: "Exporta ingresos y comprobantes a tu software contable.",
+    status: "planned",
+  },
+];
+
+export const firstNames = [
+  "Ana", "Carlos", "María", "José", "Laura", "Miguel", "Sofía", "Javier",
+  "Valentina", "Diego", "Camila", "Andrés", "Isabel", "Fernando", "Lucía",
+  "Ricardo", "Elena", "Pablo", "Gabriela", "Tomás", "Daniela", "Héctor",
+  "Paula", "Raúl", "Mariana", "Sergio", "Carmen", "Alberto", "Natalia", "Emilio",
+] as const;
+
+export const lastNames = [
+  "García", "Martínez", "López", "Sánchez", "Pérez", "Gómez", "Fernández",
+  "Díaz", "Romero", "Torres", "Ruiz", "Vargas", "Castro", "Morales", "Ortega",
+  "Delgado", "Navarro", "Ramos", "Molina", "Suárez", "Rojas", "Medina",
+  "Cruz", "Reyes", "Aguilar", "Silva", "Mendoza", "Herrera", "Rivas", "Campos",
+] as const;

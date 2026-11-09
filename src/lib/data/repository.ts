@@ -1,0 +1,75 @@
+/**
+ * Data access layer.
+ *
+ * Every screen reads data through these functions only. Today they are backed
+ * by the in-memory demo dataset; later each one can be re-implemented against
+ * Supabase (scoped to the signed-in doctor) without changing any component.
+ *
+ * Functions are async on purpose so the call sites already have the shape a
+ * network-backed implementation needs.
+ */
+import { DEMO_NOW } from "@/lib/config";
+import type {
+  Appointment,
+  Clinic,
+  ConsultationType,
+  Doctor,
+  ID,
+  Integration,
+  Patient,
+  Transaction,
+} from "@/lib/domain/types";
+import { generateDataset, type MockDataset } from "./mock/generate";
+import { clinic, consultationTypes, doctor, integrations } from "./mock/seed";
+
+let dataset: MockDataset | null = null;
+function data() {
+  dataset ??= generateDataset();
+  return dataset;
+}
+
+export interface DateRange {
+  from: Date;
+  to: Date;
+}
+
+function inRange(value: string, range?: DateRange) {
+  if (!range) return true;
+  const time = Date.parse(value);
+  return time >= range.from.getTime() && time < range.to.getTime();
+}
+
+export interface PracticeContext {
+  doctor: Doctor;
+  clinic: Clinic;
+  consultationTypes: ConsultationType[];
+}
+
+/** Reference "now" for the current data source. */
+export function getNow(): Date {
+  return DEMO_NOW;
+}
+
+export async function getPracticeContext(): Promise<PracticeContext> {
+  return { doctor, clinic, consultationTypes };
+}
+
+export async function listPatients(): Promise<Patient[]> {
+  return data().patients;
+}
+
+export async function getPatient(id: ID): Promise<Patient | null> {
+  return data().patients.find((patient) => patient.id === id) ?? null;
+}
+
+export async function listAppointments(range?: DateRange): Promise<Appointment[]> {
+  return data().appointments.filter((appointment) => inRange(appointment.startsAt, range));
+}
+
+export async function listTransactions(range?: DateRange): Promise<Transaction[]> {
+  return data().transactions.filter((transaction) => inRange(transaction.createdAt, range));
+}
+
+export async function listIntegrations(): Promise<Integration[]> {
+  return integrations;
+}
