@@ -154,3 +154,29 @@ export interface Integration {
   description: string;
   status: IntegrationStatus;
 }
+
+// ---------------------------------------------------------------------------
+// Patient documents
+// ---------------------------------------------------------------------------
+
+export type DocumentCategory = "results" | "prescription" | "imaging" | "report" | "receipt" | "other";
+
+/** Where a document comes from: sample data, a generated receipt, or a file the doctor uploaded. */
+export type DocumentSource = "sample" | "receipt" | "upload";
+
+export interface PatientDocument {
+  id: ID;
+  patientId: ID;
+  name: string;
+  category: DocumentCategory;
+  /** MIME type of the file (any type is accepted). */
+  mimeType: string;
+  /** Size in bytes. */
+  size: number;
+  createdAt: ISODateTime;
+  source: DocumentSource;
+  /** Consultation the document relates to, if any. */
+  appointmentId?: ID;
+  /** For receipts: the transaction it documents. */
+  transactionId?: ID;
+}

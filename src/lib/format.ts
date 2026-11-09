@@ -98,3 +98,11 @@ export function initials(fullName: string) {
     .map((part) => part[0]!.toUpperCase())
     .join("");
 }
+
+const sizeFormatter = new Intl.NumberFormat(locale, { maximumFractionDigits: 1 });
+/** Human-readable file size (1 536 → "1,5 KB"). */
+export function formatBytes(bytes: number) {
+  if (bytes < 1024) return `${sizeFormatter.format(bytes)} B`;
+  if (bytes < 1024 * 1024) return `${sizeFormatter.format(bytes / 1024)} KB`;
+  return `${sizeFormatter.format(bytes / (1024 * 1024))} MB`;
+}

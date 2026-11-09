@@ -48,9 +48,10 @@ src/
       layout.tsx
       dashboard/             # Panel (implementado)
       appointments/          # Agenda día/semana (?date=YYYY-MM-DD&view=day|week) y detalle /[id]
-      patients/              # Listado (?q=&segment=&sort=&page=) y perfil /[id]
+      patients/              # Listado (?q=&segment=&sort=&page=) y perfil /[id] con carpeta de documentos
       finance/               # Resumen por periodo, pendientes y movimientos (?period=&status=&method=&page=)
       settings/              # Pestañas: perfil, consultas e integraciones (solo lectura)
+    receipts/[transactionId] # Recibo de honorarios imprimible / PDF (fuera del menú, para imprimir)
   components/
     ui/                      # Primitivas reutilizables: Card, Badge, Button, Table, Avatar, EmptyState
     layout/                  # AppShell, Sidebar, navegación, PageHeader
@@ -86,12 +87,28 @@ src/
 7. **Pagos agnósticos del proveedor.** `Transaction` no contiene identificadores de Stripe ni de
    Shopify. Los datos propios de cada proveedor irán en tablas aparte.
 
+## Funciones añadidas tras la Fase 5
+
+- **Carpeta de documentos del paciente** (perfil del paciente): acepta cualquier tipo de archivo
+  (hasta 25 MB), lo clasifica (resultados, recetas, imagen, informes…) y lista también los
+  recibos. En la demo, los archivos subidos se guardan **solo en el navegador** (IndexedDB,
+  `features/documents/document-store.ts`). En producción irán a almacenamiento privado y
+  cifrado por médico.
+- **Recibos de honorarios** para reembolso de seguros médicos: uno por pago cobrado, con folio y
+  datos de facturación del médico (`lib/domain/receipts.ts`). No son facturas fiscales: ver
+  "Decisiones abiertas".
+- **Doctoralia integrado, no sustituido**: canal de reserva propio en la agenda y plan técnico en
+  [`docs/integraciones/doctoralia.md`](docs/integraciones/doctoralia.md).
+
 ## Decisiones abiertas
 
 - **Infraestructura de pagos para el marketplace.** Stripe Connect encaja de forma natural con
   muchos médicos, comisiones de plataforma, pagos a médicos y reembolsos por cita. Shopify no
   está pensado para repartir pagos entre varios proveedores, así que necesita una evaluación
   aparte antes de adoptarlo.
+- **Facturación fiscal**: los recibos actuales sirven como comprobante para la aseguradora, pero
+  una factura legal depende del país (p. ej. factura con NIF en España; CFDI timbrado en México).
+  Hay que definir el país o países de lanzamiento y el proveedor de facturación electrónica.
 - Moneda, locale y zona horaria por consultorio (hoy: USD, `es-US`, UTC en `lib/config.ts`).
 - Autenticación y autorización (probablemente Supabase Auth con Row Level Security por `doctorId`).
 - Modo oscuro (los tokens ya lo permiten).

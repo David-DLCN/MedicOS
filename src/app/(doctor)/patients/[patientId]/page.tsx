@@ -14,12 +14,14 @@ import {
   getPatient,
   getPracticeContext,
   listAppointmentsForPatient,
+  listDocumentsForPatient,
   listTransactionsForAppointments,
 } from "@/lib/data/repository";
+import { PatientDocuments } from "@/features/documents/patient-documents";
 import { ageOn } from "@/lib/domain/dates";
 import { indexById, patientName } from "@/lib/domain/lookup";
 import { summarizePatients } from "@/lib/domain/patients";
-import { canIssueReceipt, receiptHref } from "@/lib/domain/receipts";
+import { canIssueReceipt, receiptDocument, receiptHref } from "@/lib/domain/receipts";
 import { capitalize, formatAmount, formatDate, formatMoney, formatNumber, formatTime } from "@/lib/format";
 
 type Params = Promise<{ patientId: string }>;
@@ -45,9 +47,10 @@ export default async function PatientProfilePage({ params }: { params: Params })
   if (!patient) notFound();
 
   const now = getNow();
-  const [context, appointments] = await Promise.all([
+  const [context, appointments, storedDocuments] = await Promise.all([
     getPracticeContext(),
     listAppointmentsForPatient(patient.id),
+    listDocumentsForPatient(patient.id),
   ]);
   const transactions = await listTransactionsForAppointments(appointments.map((apt) => apt.id));
   const [summary] = summarizePatients({ now, patients: [patient], appointments, transactions });
@@ -59,6 +62,11 @@ export default async function PatientProfilePage({ params }: { params: Params })
   const name = patientName(patient);
   const next = summary.nextAppointment;
   const firstVisit = history.at(-1)?.startsAt ?? null;
+  // The folder shows stored documents plus a receipt for every paid consultation.
+  const documents = [
+    ...storedDocuments,
+    ...transactions.filter(canIssueReceipt).map((txn) => receiptDocument(txn, txn.appointmentId)),
+  ];
 
   return (
     <>
@@ -108,66 +116,70 @@ export default async function PatientProfilePage({ params }: { params: Params })
       </Card>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-        <Card className="lg:col-span-2">
-          <CardHeader title="Historial de citas" description={`${formatNumber(history.length)} citas, de la más reciente a la más antigua.`} />
-          <CardContent className="pt-2">
-            <Table>
-              <thead>
-                <tr>
-                  <Th>Fecha</Th>
-                  <Th>Consulta</Th>
-                  <Th>Estado</Th>
-                  <Th>Pago</Th>
-                  <Th className="text-right">Importe</Th>
-                </tr>
-              </thead>
-              <tbody>
-                {history.map((apt) => {
-                  const payment = paymentByAppointment.get(apt.id);
-                  const consultation = typesById.get(apt.consultationTypeId);
-                  const status = APPOINTMENT_STATUS[apt.status];
-                  return (
-                    <tr key={apt.id} className="group">
-                      <Td className="tabular">
-                        <Link href={`/appointments/${apt.id}`} className="group-hover:underline">
-                          {formatDate(apt.startsAt)}
-                        </Link>
-                        <span className="block text-xs text-muted">{formatTime(apt.startsAt)}</span>
-                      </Td>
-                      <Td>
-                        <span className="block">{consultation?.name ?? "Consulta"}</span>
-                        <span className="block text-xs text-muted">{MODALITY_LABEL[apt.modality]}</span>
-                      </Td>
-                      <Td>
-                        <Badge tone={status.tone}>{status.label}</Badge>
-                      </Td>
-                      <Td>
-                        {payment ? (
-                          <Badge tone={PAYMENT_STATUS[payment.status].tone}>
-                            {PAYMENT_STATUS[payment.status].label}
-                          </Badge>
-                        ) : (
-                          <span className="text-subtle">—</span>
-                        )}
-                      </Td>
-                      <Td className="tabular text-right">
-                        {payment ? formatMoney(payment.amount) : <span className="text-subtle">—</span>}
-                        {payment && canIssueReceipt(payment) ? (
-                          <Link
-                            href={receiptHref(payment)}
-                            className="block text-xs font-medium text-primary hover:underline"
-                          >
-                            Recibo
+        <div className="space-y-4 lg:col-span-2">
+          <PatientDocuments patientId={patient.id} documents={documents} />
+
+          <Card>
+            <CardHeader title="Historial de citas" description={`${formatNumber(history.length)} citas, de la más reciente a la más antigua.`} />
+            <CardContent className="pt-2">
+              <Table>
+                <thead>
+                  <tr>
+                    <Th>Fecha</Th>
+                    <Th>Consulta</Th>
+                    <Th>Estado</Th>
+                    <Th>Pago</Th>
+                    <Th className="text-right">Importe</Th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {history.map((apt) => {
+                    const payment = paymentByAppointment.get(apt.id);
+                    const consultation = typesById.get(apt.consultationTypeId);
+                    const status = APPOINTMENT_STATUS[apt.status];
+                    return (
+                      <tr key={apt.id} className="group">
+                        <Td className="tabular">
+                          <Link href={`/appointments/${apt.id}`} className="group-hover:underline">
+                            {formatDate(apt.startsAt)}
                           </Link>
-                        ) : null}
-                      </Td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </Table>
-          </CardContent>
-        </Card>
+                          <span className="block text-xs text-muted">{formatTime(apt.startsAt)}</span>
+                        </Td>
+                        <Td>
+                          <span className="block">{consultation?.name ?? "Consulta"}</span>
+                          <span className="block text-xs text-muted">{MODALITY_LABEL[apt.modality]}</span>
+                        </Td>
+                        <Td>
+                          <Badge tone={status.tone}>{status.label}</Badge>
+                        </Td>
+                        <Td>
+                          {payment ? (
+                            <Badge tone={PAYMENT_STATUS[payment.status].tone}>
+                              {PAYMENT_STATUS[payment.status].label}
+                            </Badge>
+                          ) : (
+                            <span className="text-subtle">—</span>
+                          )}
+                        </Td>
+                        <Td className="tabular text-right">
+                          {payment ? formatMoney(payment.amount) : <span className="text-subtle">—</span>}
+                          {payment && canIssueReceipt(payment) ? (
+                            <Link
+                              href={receiptHref(payment)}
+                              className="block text-xs font-medium text-primary hover:underline"
+                            >
+                              Recibo
+                            </Link>
+                          ) : null}
+                        </Td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </Table>
+            </CardContent>
+          </Card>
+        </div>
 
         <div className="space-y-4">
           <Card>

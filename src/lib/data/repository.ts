@@ -17,14 +17,19 @@ import type {
   ID,
   Integration,
   Patient,
+  PatientDocument,
   Transaction,
 } from "@/lib/domain/types";
+import { generateSampleDocuments } from "./mock/documents";
 import { generateDataset, type MockDataset } from "./mock/generate";
 import { clinic, consultationTypes, doctor, integrations } from "./mock/seed";
 
-let dataset: MockDataset | null = null;
+let dataset: (MockDataset & { documents: PatientDocument[] }) | null = null;
 function data() {
-  dataset ??= generateDataset();
+  if (!dataset) {
+    const generated = generateDataset();
+    dataset = { ...generated, documents: generateSampleDocuments(generated.appointments) };
+  }
   return dataset;
 }
 
@@ -85,6 +90,16 @@ export async function getTransaction(id: ID): Promise<Transaction | null> {
 
 export async function listTransactions(range?: DateRange): Promise<Transaction[]> {
   return data().transactions.filter((transaction) => inRange(transaction.createdAt, range));
+}
+
+/**
+ * Stored documents of a patient (newest first). Receipts are not stored: they
+ * are generated from paid transactions (see lib/domain/receipts.ts).
+ */
+export async function listDocumentsForPatient(patientId: ID): Promise<PatientDocument[]> {
+  return data()
+    .documents.filter((doc) => doc.patientId === patientId)
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
 export async function listIntegrations(): Promise<Integration[]> {
