@@ -5,7 +5,7 @@
  * resolved per doctor / clinic (e.g. from Supabase) without touching UI code.
  */
 export const APP_CONFIG = {
-  productName: "MedikOS",
+  productName: "MedicOS",
   /** Locale used for all number / date formatting. */
   locale: "es-US",
   /** Default currency for the prototype. All mock amounts use it. */

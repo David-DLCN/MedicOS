@@ -71,7 +71,7 @@ export const integrations: Integration[] = [
     id: "int_google_calendar",
     name: "Google Calendar",
     category: "scheduling",
-    description: "Sincroniza tu agenda de MedikOS con tu calendario personal.",
+    description: "Sincroniza tu agenda de MedicOS con tu calendario personal.",
     status: "planned",
   },
   {

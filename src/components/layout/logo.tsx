@@ -12,7 +12,7 @@ export function Logo({ className }: { className?: string }) {
         </svg>
       </span>
       <span className="text-[15px] font-semibold tracking-tight">
-        Medik<span className="text-primary">OS</span>
+        Medic<span className="text-primary">OS</span>
       </span>
     </span>
   );

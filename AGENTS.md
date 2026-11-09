@@ -1,6 +1,6 @@
 # Instrucciones para agentes (Codex, Claude y otros)
 
-MedikOS es un SaaS para médicos independientes. Hoy es un prototipo: un panel del médico con
+MedicOS es un SaaS para médicos independientes. Hoy es un prototipo: un panel del médico con
 **datos ficticios**. Lee el `README.md` para conocer la arquitectura.
 
 ## Reglas de diseño (obligatorias)

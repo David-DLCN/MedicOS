@@ -209,7 +209,7 @@ export default async function PatientProfilePage({ params }: { params: Params })
           </Card>
 
           <p className="px-1 text-xs text-subtle">
-            MedikOS no almacena historia clínica en esta versión: solo datos administrativos de ejemplo.
+            MedicOS no almacena historia clínica en esta versión: solo datos administrativos de ejemplo.
           </p>
         </div>
       </div>

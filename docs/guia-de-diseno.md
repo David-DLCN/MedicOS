@@ -1,4 +1,4 @@
-# Guía de diseño de MedikOS
+# Guía de diseño de MedicOS
 
 Reglas obligatorias para cualquier pantalla nueva o modificada. Se basan en el artículo
 *"Reglas para un buen sitio web"* (DISEÑO WEB, Medium), adaptado a una aplicación SaaS para
@@ -107,7 +107,7 @@ fáciles de encontrar.
 ## 8. Aprovechar el medio
 
 - **Retroalimentación:** cuando exista el backend, el médico tendrá un canal visible para enviar
-  comentarios sobre MedikOS. En el marketplace, los pacientes podrán dejar opiniones verificadas.
+  comentarios sobre MedicOS. En el marketplace, los pacientes podrán dejar opiniones verificadas.
 - Los datos se actualizan solos: los avisos del panel se generan a partir de la actividad y
   nunca se escriben a mano.
 

@@ -1,5 +1,5 @@
 /**
- * Core domain model for MedikOS.
+ * Core domain model for MedicOS.
  *
  * These types are the contract between the UI and the data layer. The mock
  * data and, later, the Supabase repositories must both produce exactly these
@@ -83,7 +83,7 @@ export type AppointmentStatus =
   | "cancelled"
   | "no_show";
 
-/** Where the booking came from. "marketplace" is the future MedikOS booking flow. */
+/** Where the booking came from. "marketplace" is the future MedicOS booking flow. */
 export type BookingChannel = "marketplace" | "phone" | "walk_in";
 
 export interface Appointment {
