@@ -57,7 +57,11 @@ function AppointmentListItem({ row, now }: { row: AppointmentRow; now: Date }) {
             <Video className="mr-1 inline size-3.5 align-[-3px]" aria-hidden />
           ) : null}
           {consultation?.name ?? "Consulta"} · {MODALITY_LABEL[appointment.modality]}
-          <span className="hidden md:inline"> · {CHANNEL_LABEL[appointment.channel]}</span>
+          {/* Doctoralia origin stays visible on mobile: it tells the doctor where the booking lives. */}
+          <span className={appointment.channel === "doctoralia" ? "" : "hidden md:inline"}>
+            {" "}
+            · {CHANNEL_LABEL[appointment.channel]}
+          </span>
         </p>
       </div>
 

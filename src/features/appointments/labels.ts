@@ -16,6 +16,7 @@ export const MODALITY_LABEL: Record<ConsultationModality, string> = {
 
 export const CHANNEL_LABEL: Record<BookingChannel, string> = {
   marketplace: "Reserva online",
+  doctoralia: "Doctoralia",
   phone: "Teléfono",
   walk_in: "Sin cita",
 };

@@ -68,6 +68,14 @@ export const integrations: Integration[] = [
     status: "planned",
   },
   {
+    id: "int_doctoralia",
+    name: "Doctoralia",
+    category: "scheduling",
+    description:
+      "Tus reservas de Doctoralia entran en tu agenda de MedicOS y tu disponibilidad se publica en Doctoralia, sin duplicar citas.",
+    status: "planned",
+  },
+  {
     id: "int_google_calendar",
     name: "Google Calendar",
     category: "scheduling",

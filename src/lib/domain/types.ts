@@ -83,8 +83,11 @@ export type AppointmentStatus =
   | "cancelled"
   | "no_show";
 
-/** Where the booking came from. "marketplace" is the future MedicOS booking flow. */
-export type BookingChannel = "marketplace" | "phone" | "walk_in";
+/**
+ * Where the booking came from. "marketplace" is the future MedicOS booking flow;
+ * "doctoralia" are bookings synced from Doctoralia (Docplanner Integrations API).
+ */
+export type BookingChannel = "marketplace" | "doctoralia" | "phone" | "walk_in";
 
 export interface Appointment {
   id: ID;
@@ -96,6 +99,8 @@ export interface Appointment {
   status: AppointmentStatus;
   modality: ConsultationModality;
   channel: BookingChannel;
+  /** Booking id in the external system it was synced from (e.g. Doctoralia). */
+  externalBookingId?: string;
 }
 
 // ---------------------------------------------------------------------------

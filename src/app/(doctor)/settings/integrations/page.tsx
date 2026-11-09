@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { CalendarDays, CreditCard, MessageSquare, Receipt, type LucideIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { DoctoraliaCard } from "@/features/settings/doctoralia-card";
 import { INTEGRATION_CATEGORY } from "@/features/settings/labels";
-import { listIntegrations } from "@/lib/data/repository";
+import { getNow, listAppointments, listIntegrations } from "@/lib/data/repository";
+import { addDays, startOfDay } from "@/lib/domain/dates";
 import type { IntegrationCategory } from "@/lib/domain/types";
 
 export const metadata: Metadata = { title: "Integraciones · Ajustes" };
@@ -18,7 +20,12 @@ const CATEGORY_ICON: Record<IntegrationCategory, LucideIcon> = {
 const CATEGORY_ORDER: IntegrationCategory[] = ["payments", "scheduling", "communication", "accounting"];
 
 export default async function IntegrationsSettingsPage() {
-  const integrations = await listIntegrations();
+  const now = getNow();
+  const [integrations, recent] = await Promise.all([
+    listIntegrations(),
+    listAppointments({ from: addDays(startOfDay(now), -89), to: now }),
+  ]);
+  const fromDoctoralia = recent.filter((apt) => apt.channel === "doctoralia").length;
 
   return (
     <div className="space-y-4">
@@ -26,6 +33,11 @@ export default async function IntegrationsSettingsPage() {
         Conecta MedicOS con los servicios que ya usas. Ninguna integración está activa todavía: esta pantalla
         muestra lo que llegará y para qué servirá.
       </p>
+
+      <DoctoraliaCard
+        bookings90d={fromDoctoralia}
+        share90d={recent.length === 0 ? 0 : fromDoctoralia / recent.length}
+      />
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {CATEGORY_ORDER.map((category) => {

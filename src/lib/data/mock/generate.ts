@@ -120,6 +120,8 @@ function paymentMethod(random: Random, channel: BookingChannel): PaymentMethod {
 
 export function generateDataset(seed = 20261109): MockDataset {
   const random = createRandom(seed);
+  // Separate stream so tagging Doctoralia bookings leaves every other figure unchanged.
+  const channelRandom = createRandom(seed + 1);
   const patients = buildPatients(random);
   const firstVisit = new Map<string, number>();
   const appointments: Appointment[] = [];
@@ -199,6 +201,12 @@ export function generateDataset(seed = 20261109): MockDataset {
 
       const transaction = deriveTransaction(random, appointment, type, transactions.length + 1);
       if (transaction) transactions.push(transaction);
+
+      // About half of phone bookings actually come from the doctor's Doctoralia profile.
+      if (appointment.channel === "phone" && channelRandom.chance(0.45)) {
+        appointment.channel = "doctoralia";
+        appointment.externalBookingId = `DOC-${channelRandom.int(1_000_000, 9_999_999)}`;
+      }
 
       cursor += type.durationMinutes;
     }

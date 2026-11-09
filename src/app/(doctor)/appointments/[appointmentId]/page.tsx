@@ -109,7 +109,12 @@ export default async function AppointmentDetailPage({ params }: { params: Params
                     {MODALITY_LABEL[appointment.modality]}
                   </span>
                 </Field>
-                <Field label="Origen de la reserva">{CHANNEL_LABEL[appointment.channel]}</Field>
+                <Field label="Origen de la reserva">
+                  {CHANNEL_LABEL[appointment.channel]}
+                  {appointment.externalBookingId ? (
+                    <span className="block text-xs text-muted">Ref. {appointment.externalBookingId}</span>
+                  ) : null}
+                </Field>
                 <Field label="Referencia">
                   <span className="text-muted">{appointment.id}</span>
                 </Field>
