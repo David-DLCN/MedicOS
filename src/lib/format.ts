@@ -49,6 +49,12 @@ export function formatChange(ratio: number) {
   return percentFormatter.format(ratio);
 }
 
+const shareFormatter = new Intl.NumberFormat(locale, { style: "percent", maximumFractionDigits: 0 });
+/** Format a share of a whole (0.42 → "42 %"). */
+export function formatShare(ratio: number) {
+  return shareFormatter.format(ratio);
+}
+
 const dateFormatters = {
   short: new Intl.DateTimeFormat(locale, { day: "numeric", month: "short", timeZone }),
   medium: new Intl.DateTimeFormat(locale, {

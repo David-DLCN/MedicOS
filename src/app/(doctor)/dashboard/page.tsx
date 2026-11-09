@@ -6,7 +6,7 @@ import { RevenueChart } from "@/components/charts/revenue-chart";
 import { AlertsPanel } from "@/features/dashboard/alerts-panel";
 import { AppointmentStatusSummary } from "@/features/dashboard/appointment-status-summary";
 import { getDashboardData } from "@/features/dashboard/get-dashboard-data";
-import { MetricCard } from "@/features/dashboard/metric-card";
+import { MetricCard } from "@/components/ui/metric-card";
 import { RecentTransactions } from "@/features/dashboard/recent-transactions";
 import { UpcomingAppointments } from "@/features/dashboard/upcoming-appointments";
 import { formatAmount, formatNumber } from "@/lib/format";

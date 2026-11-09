@@ -207,7 +207,7 @@ export function operationalAlerts(input: {
       severity: "attention",
       title: `${overdue.length} pagos pendientes con más de 7 días`,
       description: "Consultas realizadas que aún no se han cobrado.",
-      href: "/finance",
+      href: "/finance#pendientes",
     });
   }
 
