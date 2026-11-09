@@ -19,6 +19,7 @@ import {
 import { ageOn } from "@/lib/domain/dates";
 import { indexById, patientName } from "@/lib/domain/lookup";
 import { summarizePatients } from "@/lib/domain/patients";
+import { canIssueReceipt, receiptHref } from "@/lib/domain/receipts";
 import { capitalize, formatAmount, formatDate, formatMoney, formatNumber, formatTime } from "@/lib/format";
 
 type Params = Promise<{ patientId: string }>;
@@ -151,6 +152,14 @@ export default async function PatientProfilePage({ params }: { params: Params })
                       </Td>
                       <Td className="tabular text-right">
                         {payment ? formatMoney(payment.amount) : <span className="text-subtle">—</span>}
+                        {payment && canIssueReceipt(payment) ? (
+                          <Link
+                            href={receiptHref(payment)}
+                            className="block text-xs font-medium text-primary hover:underline"
+                          >
+                            Recibo
+                          </Link>
+                        ) : null}
                       </Td>
                     </tr>
                   );

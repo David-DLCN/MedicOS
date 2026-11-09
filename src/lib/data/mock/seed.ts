@@ -22,6 +22,12 @@ export const doctor: Doctor = {
   specialty: "Medicina interna",
   email: "lucia.herrera@example.com",
   phone: "+1 555 0100",
+  billing: {
+    legalName: "Lucía Herrera Ortiz",
+    taxId: "DEMO-00000000-X",
+    licenseNumber: "DEMO-12345",
+    address: "Calle Ejemplo 123, consultorio 4, Ciudad Demo",
+  },
 };
 
 export const consultationTypes: ConsultationType[] = [

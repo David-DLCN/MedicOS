@@ -37,6 +37,21 @@ export default async function ProfileSettingsPage() {
           </Card>
 
           <Card>
+            <CardHeader
+              title="Datos de facturación"
+              description="Aparecen en los recibos que entregas a tus pacientes para su reembolso."
+            />
+            <CardContent>
+              <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <Field label="Nombre o razón social">{doctor.billing.legalName}</Field>
+                <Field label="Identificación fiscal">{doctor.billing.taxId}</Field>
+                <Field label="Nº de colegiado / cédula">{doctor.billing.licenseNumber}</Field>
+                <Field label="Dirección fiscal">{doctor.billing.address}</Field>
+              </dl>
+            </CardContent>
+          </Card>
+
+          <Card>
             <CardHeader title="Consultorio" />
             <CardContent>
               <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">

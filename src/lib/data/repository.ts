@@ -79,6 +79,10 @@ export async function listTransactionsForAppointments(appointmentIds: ID[]): Pro
   return data().transactions.filter((transaction) => ids.has(transaction.appointmentId));
 }
 
+export async function getTransaction(id: ID): Promise<Transaction | null> {
+  return data().transactions.find((transaction) => transaction.id === id) ?? null;
+}
+
 export async function listTransactions(range?: DateRange): Promise<Transaction[]> {
   return data().transactions.filter((transaction) => inRange(transaction.createdAt, range));
 }

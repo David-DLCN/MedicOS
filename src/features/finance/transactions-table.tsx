@@ -1,10 +1,12 @@
 import Link from "next/link";
+import { FileText } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Pagination } from "@/components/ui/pagination";
 import { Table, Td, Th } from "@/components/ui/table";
 import { activityDate } from "@/lib/domain/finance";
+import { canIssueReceipt, receiptHref } from "@/lib/domain/receipts";
 import { formatDate, formatMoney, formatNumber } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { type FinanceParams, financeHref } from "./finance-params";
@@ -112,6 +114,9 @@ export function TransactionsTable({
                     <Th>Método</Th>
                     <Th>Estado</Th>
                     <Th className="text-right">Importe</Th>
+                    <Th className="w-px">
+                      <span className="sr-only">Recibo</span>
+                    </Th>
                   </tr>
                 </thead>
                 <tbody>
@@ -141,6 +146,16 @@ export function TransactionsTable({
                           )}
                         >
                           {formatMoney(transaction.amount)}
+                        </Td>
+                        <Td className="pl-4 text-right">
+                          {canIssueReceipt(transaction) ? (
+                            <Link
+                              href={receiptHref(transaction)}
+                              className="inline-flex items-center gap-1 text-xs font-medium whitespace-nowrap text-primary hover:underline"
+                            >
+                              <FileText className="size-3.5" aria-hidden /> Recibo
+                            </Link>
+                          ) : null}
                         </Td>
                       </tr>
                     );

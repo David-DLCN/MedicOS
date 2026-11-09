@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, CalendarClock, Mail, Phone, Video } from "lucide-react";
+import { ArrowLeft, CalendarClock, FileText, Mail, Phone, Video } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
@@ -19,6 +19,7 @@ import {
   listTransactionsForAppointments,
 } from "@/lib/data/repository";
 import { ageOn } from "@/lib/domain/dates";
+import { canIssueReceipt, receiptHref } from "@/lib/domain/receipts";
 import { indexById, patientName } from "@/lib/domain/lookup";
 import { capitalize, formatDate, formatMoney, formatNumber, formatTime } from "@/lib/format";
 import { cn } from "@/lib/utils";
@@ -123,7 +124,16 @@ export default async function AppointmentDetailPage({ params }: { params: Params
           </Card>
 
           <Card>
-            <CardHeader title="Pago" />
+            <CardHeader
+              title="Pago"
+              action={
+                payment && canIssueReceipt(payment) ? (
+                  <ButtonLink href={receiptHref(payment)} variant="secondary" size="sm">
+                    <FileText className="size-4" aria-hidden /> Emitir recibo
+                  </ButtonLink>
+                ) : null
+              }
+            />
             <CardContent>
               {payment ? (
                 <dl className="grid grid-cols-2 gap-4 sm:grid-cols-3">

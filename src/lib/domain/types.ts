@@ -45,6 +45,17 @@ export interface ConsultationType {
   modality: ConsultationModality;
 }
 
+/** Data printed on receipts and invoices. Requirements vary by country. */
+export interface DoctorBilling {
+  /** Legal name the receipts are issued under. */
+  legalName: string;
+  /** Tax identification number (NIF, RFC, RUT…). */
+  taxId: string;
+  /** Professional licence / registration number (nº de colegiado, cédula profesional…). */
+  licenseNumber: string;
+  address: string;
+}
+
 export interface Doctor {
   id: ID;
   clinicId: ID;
@@ -54,6 +65,7 @@ export interface Doctor {
   specialty: string;
   email: string;
   phone: string;
+  billing: DoctorBilling;
 }
 
 // ---------------------------------------------------------------------------
