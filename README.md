@@ -1,4 +1,4 @@
-# MedikOS
+# MedicOS
 
 El sistema operativo para médicos independientes y consultorios pequeños.
 
