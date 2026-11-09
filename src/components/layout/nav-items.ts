@@ -19,7 +19,7 @@ export const NAV_ITEMS: NavItem[] = [
   { href: "/appointments", label: "Citas", icon: CalendarDays },
   { href: "/patients", label: "Pacientes", icon: Users },
   { href: "/finance", label: "Finanzas", icon: Wallet },
-  { href: "/settings", label: "Ajustes e integraciones", icon: Settings },
+  { href: "/settings", label: "Ajustes", icon: Settings },
 ];
 
 export function isActive(pathname: string, href: string) {

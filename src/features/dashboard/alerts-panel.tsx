@@ -11,12 +11,12 @@ export function AlertsPanel({ alerts }: { alerts: OperationalAlert[] }) {
       <CardContent className="flex-1">
         {alerts.length === 0 ? (
           <p className="flex items-center gap-2 text-sm text-muted">
-            <CheckCircle2 className="size-4 text-success" aria-hidden /> Todo al día.
+            <CheckCircle2 className="size-4 text-primary" aria-hidden /> Todo al día.
           </p>
         ) : (
           <ul className="space-y-2">
             {alerts.map((alert) => {
-              const Icon = alert.severity === "warning" ? AlertTriangle : Info;
+              const Icon = alert.severity === "attention" ? AlertTriangle : Info;
               return (
                 <li key={alert.id}>
                   <Link
@@ -26,7 +26,7 @@ export function AlertsPanel({ alerts }: { alerts: OperationalAlert[] }) {
                     <span
                       className={cn(
                         "mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-md",
-                        alert.severity === "warning" ? "bg-warning-soft text-warning" : "bg-info-soft text-info",
+                        alert.severity === "attention" ? "bg-danger-soft text-danger" : "bg-info-soft text-info",
                       )}
                     >
                       <Icon className="size-4" aria-hidden />

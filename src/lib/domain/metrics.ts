@@ -165,7 +165,8 @@ export function recentTransactions(transactions: Transaction[], limit = 6) {
 // Operational alerts — derived from data, never hard-coded.
 // ---------------------------------------------------------------------------
 
-export type AlertSeverity = "info" | "warning";
+/** "attention" = a problem that needs action (red); "info" = useful heads-up (blue). */
+export type AlertSeverity = "info" | "attention";
 
 export interface OperationalAlert {
   id: string;
@@ -190,7 +191,7 @@ export function operationalAlerts(input: {
   if (unconfirmedSoon > 0) {
     alerts.push({
       id: "unconfirmed",
-      severity: "warning",
+      severity: "info",
       title: `${unconfirmedSoon} citas sin confirmar`,
       description: "Programadas para hoy, mañana o pasado mañana.",
       href: "/appointments?view=week",
@@ -203,7 +204,7 @@ export function operationalAlerts(input: {
   if (overdue.length > 0) {
     alerts.push({
       id: "overdue",
-      severity: "warning",
+      severity: "attention",
       title: `${overdue.length} pagos pendientes con más de 7 días`,
       description: "Consultas realizadas que aún no se han cobrado.",
       href: "/finance",

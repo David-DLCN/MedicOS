@@ -37,7 +37,7 @@ export function MetricCard({
           <span
             className={cn(
               "tabular inline-flex items-center gap-0.5 font-medium",
-              positive && "text-success",
+              positive && "text-primary",
               negative && "text-danger",
               !positive && !negative && "text-muted",
             )}

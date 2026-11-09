@@ -2,9 +2,9 @@ import type { BadgeTone } from "@/components/ui/badge";
 import type { AppointmentStatus, BookingChannel, ConsultationModality } from "@/lib/domain/types";
 
 export const APPOINTMENT_STATUS: Record<AppointmentStatus, { label: string; tone: BadgeTone }> = {
-  scheduled: { label: "Por confirmar", tone: "warning" },
+  scheduled: { label: "Por confirmar", tone: "outline" },
   confirmed: { label: "Confirmada", tone: "info" },
-  completed: { label: "Realizada", tone: "success" },
+  completed: { label: "Realizada", tone: "primary" },
   cancelled: { label: "Cancelada", tone: "neutral" },
   no_show: { label: "No asistió", tone: "danger" },
 };

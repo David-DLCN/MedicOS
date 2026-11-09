@@ -8,11 +8,13 @@ import { Logo } from "./logo";
 import { NAV_ITEMS, isActive } from "./nav-items";
 
 export interface SidebarDoctor {
+  fullName: string;
   displayName: string;
   specialty: string;
   clinicName: string;
 }
 
+/** Light navigation rail: a professional app avoids dark backgrounds (docs/guia-de-diseno.md). */
 export function Sidebar({
   doctor,
   onNavigate,
@@ -23,8 +25,8 @@ export function Sidebar({
   const pathname = usePathname();
 
   return (
-    <div className="flex h-full flex-col bg-sidebar text-sidebar-foreground">
-      <div className="flex h-16 items-center px-5 text-white">
+    <div className="flex h-full flex-col bg-surface">
+      <div className="flex h-16 items-center px-5">
         <Logo />
       </div>
 
@@ -41,11 +43,11 @@ export function Sidebar({
                   className={cn(
                     "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                     active
-                      ? "bg-sidebar-active text-white"
-                      : "text-sidebar-foreground hover:bg-sidebar-active/60 hover:text-white",
+                      ? "bg-primary-soft text-primary"
+                      : "text-muted hover:bg-surface-muted hover:text-foreground",
                   )}
                 >
-                  <Icon className={cn("size-4.5", active ? "text-teal-300" : "text-sidebar-muted")} aria-hidden />
+                  <Icon className={cn("size-4.5", active ? "text-primary" : "text-subtle")} aria-hidden />
                   {label}
                 </Link>
               </li>
@@ -54,12 +56,12 @@ export function Sidebar({
         </ul>
       </nav>
 
-      <div className="border-t border-white/10 p-4">
+      <div className="border-t border-border p-4">
         <div className="flex items-center gap-3">
-          <Avatar name={doctor.displayName.replace(/^Dr[a]?\.\s*/, "")} className="bg-white/10 text-white" />
+          <Avatar name={doctor.fullName} />
           <div className="min-w-0">
-            <p className="truncate text-sm font-medium text-white">{doctor.displayName}</p>
-            <p className="truncate text-xs text-sidebar-muted">
+            <p className="truncate text-sm font-medium">{doctor.displayName}</p>
+            <p className="truncate text-xs text-muted">
               {doctor.specialty} · {doctor.clinicName}
             </p>
           </div>

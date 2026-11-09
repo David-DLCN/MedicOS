@@ -6,6 +6,10 @@ El sistema operativo para médicos independientes y consultorios pequeños.
 > pacientes, citas y cifras se generan de forma determinista. No hay backend, autenticación ni
 > pagos reales, y el prototipo **no** cumple ninguna normativa sanitaria.
 
+> **Diseño:** toda pantalla debe cumplir [`docs/guia-de-diseno.md`](docs/guia-de-diseno.md)
+> (4 colores fríos como máximo, una sola fuente, menú de 5 secciones como máximo, textos breves).
+> Las instrucciones para agentes de código están en [`AGENTS.md`](AGENTS.md).
+
 ## Puesta en marcha
 
 Requisitos: Node.js 20 o superior (probado con 22).
@@ -28,7 +32,7 @@ npm run build      # build de producción
 | Capa | Elección | Nota |
 | --- | --- | --- |
 | Framework | Next.js 15 (App Router) + React 19 + TypeScript estricto | |
-| Estilos | Tailwind CSS v4 con tokens semánticos en `src/app/globals.css` | Componentes al estilo shadcn/ui, escritos a mano (sin CLI) |
+| Estilos | Tailwind CSS v4 con tokens semánticos en `src/app/globals.css` (paleta de 4 colores) | Componentes al estilo shadcn/ui, escritos a mano (sin CLI) |
 | Gráficos | Recharts | |
 | Iconos | lucide-react | |
 | Datos | Repositorio en memoria con datos ficticios | Preparado para Supabase/PostgreSQL |

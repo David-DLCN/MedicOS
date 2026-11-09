@@ -7,9 +7,9 @@ import { cn } from "@/lib/utils";
 const ORDER: AppointmentStatus[] = ["completed", "confirmed", "scheduled", "cancelled", "no_show"];
 
 const BAR_COLOR: Record<AppointmentStatus, string> = {
-  completed: "bg-success",
+  completed: "bg-primary",
   confirmed: "bg-info",
-  scheduled: "bg-warning",
+  scheduled: "bg-info/35",
   cancelled: "bg-border-strong",
   no_show: "bg-danger",
 };

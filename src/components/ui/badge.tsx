@@ -1,14 +1,14 @@
 import { cn } from "@/lib/utils";
 
-export type BadgeTone = "neutral" | "primary" | "success" | "warning" | "danger" | "info";
+/** Four-colour system (see globals.css): primary, info, neutral and danger, plus an outline variant. */
+export type BadgeTone = "neutral" | "primary" | "info" | "outline" | "danger";
 
 const tones: Record<BadgeTone, string> = {
   neutral: "bg-neutral-soft text-muted",
   primary: "bg-primary-soft text-primary",
-  success: "bg-success-soft text-success",
-  warning: "bg-warning-soft text-warning",
-  danger: "bg-danger-soft text-danger",
   info: "bg-info-soft text-info",
+  outline: "bg-surface text-info ring-1 ring-inset ring-info/40",
+  danger: "bg-danger-soft text-danger",
 };
 
 export function Badge({

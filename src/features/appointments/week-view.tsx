@@ -7,9 +7,9 @@ import { agendaHref } from "./agenda-toolbar";
 import { APPOINTMENT_STATUS } from "./labels";
 
 const STATUS_BORDER = {
-  scheduled: "border-l-warning",
+  scheduled: "border-l-info/40",
   confirmed: "border-l-info",
-  completed: "border-l-success",
+  completed: "border-l-primary",
   cancelled: "border-l-border-strong",
   no_show: "border-l-danger",
 } as const;

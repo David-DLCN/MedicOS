@@ -35,7 +35,7 @@ export function AppShell({
 
   return (
     <div className="min-h-dvh">
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 lg:block">
+      <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 border-r border-border lg:block">
         <Sidebar doctor={doctor} />
       </aside>
 
@@ -53,7 +53,7 @@ export function AppShell({
               type="button"
               aria-label="Cerrar menú"
               onClick={() => setOpen(false)}
-              className="absolute top-4 right-3 rounded-md p-1.5 text-sidebar-foreground hover:bg-sidebar-active"
+              className="absolute top-4 right-3 rounded-md p-1.5 text-muted hover:bg-surface-muted"
             >
               <X className="size-5" aria-hidden />
             </button>
@@ -76,7 +76,7 @@ export function AppShell({
           <div className="ml-auto flex items-center gap-3">
             {isDemo ? (
               <span
-                className="rounded-full border border-warning/30 bg-warning-soft px-2.5 py-1 text-xs font-medium text-warning"
+                className="rounded-full bg-info-soft px-2.5 py-1 text-xs font-medium text-info"
                 title="Todos los pacientes, citas y cifras de esta versión son ficticios."
               >
                 Datos de demostración

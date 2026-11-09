@@ -10,6 +10,7 @@ export default async function DoctorLayout({ children }: { children: React.React
   return (
     <AppShell
       doctor={{
+        fullName: doctor.fullName,
         displayName: `${doctor.title} ${doctor.fullName}`,
         specialty: doctor.specialty,
         clinicName: clinic.name,

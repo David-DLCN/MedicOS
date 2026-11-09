@@ -1,9 +1,15 @@
 @import "tailwindcss";
 
 /*
- * MedikOS design tokens.
- * Components only use these semantic names (bg-surface, text-muted, …),
- * never raw palette colours, so the theme can evolve in one place.
+ * MedikOS design tokens — see docs/guia-de-diseno.md.
+ *
+ * Brand palette: four cool colours at most.
+ *   1. Primary teal   → brand, actions, positive outcomes (completed, paid).
+ *   2. Blue           → information and confirmed / upcoming states.
+ *   3. Slate greys    → text, surfaces, borders, neutral states.
+ *   4. Red            → reserved for problems only (no-show, failed, overdue).
+ * No warm accents (amber/orange/yellow) and no dark backgrounds.
+ * Components only use these semantic names, never raw palette colours.
  */
 :root {
   --background: #f6f7f9;
@@ -20,10 +26,6 @@
   --primary-foreground: #ffffff;
   --primary-soft: #e3f1f0;
 
-  --success: #157347;
-  --success-soft: #e7f5ed;
-  --warning: #a35a00;
-  --warning-soft: #fdf3e2;
   --danger: #b42323;
   --danger-soft: #fdeceb;
   --info: #2450b8;
@@ -32,11 +34,6 @@
 
   --chart-1: #0b6b6b;
   --chart-2: #9fb3c8;
-
-  --sidebar: #0e1b24;
-  --sidebar-foreground: #c7d0da;
-  --sidebar-muted: #7f8c99;
-  --sidebar-active: #1a2c38;
 }
 
 @theme inline {
@@ -54,10 +51,6 @@
   --color-primary-foreground: var(--primary-foreground);
   --color-primary-soft: var(--primary-soft);
 
-  --color-success: var(--success);
-  --color-success-soft: var(--success-soft);
-  --color-warning: var(--warning);
-  --color-warning-soft: var(--warning-soft);
   --color-danger: var(--danger);
   --color-danger-soft: var(--danger-soft);
   --color-info: var(--info);
@@ -66,11 +59,6 @@
 
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
-
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-muted: var(--sidebar-muted);
-  --color-sidebar-active: var(--sidebar-active);
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }

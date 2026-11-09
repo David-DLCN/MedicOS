@@ -110,7 +110,7 @@ export default async function AppointmentDetailPage({ params }: { params: Params
                 </Field>
                 <Field label="Origen de la reserva">{CHANNEL_LABEL[appointment.channel]}</Field>
                 <Field label="Referencia">
-                  <span className="font-mono text-xs text-muted">{appointment.id}</span>
+                  <span className="text-muted">{appointment.id}</span>
                 </Field>
               </dl>
             </CardContent>
