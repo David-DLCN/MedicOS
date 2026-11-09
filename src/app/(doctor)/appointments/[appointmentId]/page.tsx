@@ -4,7 +4,9 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, CalendarClock, Mail, Phone, Video } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { ButtonLink } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Field } from "@/components/ui/field";
 import { agendaHref } from "@/features/appointments/agenda-toolbar";
 import { APPOINTMENT_STATUS, CHANNEL_LABEL, MODALITY_LABEL } from "@/features/appointments/labels";
 import { PAYMENT_METHOD_LABEL, PAYMENT_STATUS } from "@/features/finance/labels";
@@ -28,15 +30,6 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const appointment = await getAppointment(appointmentId);
   const patient = appointment ? await getPatient(appointment.patientId) : null;
   return { title: patient ? `Cita · ${patientName(patient)}` : "Cita" };
-}
-
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <div>
-      <dt className="text-xs font-medium text-subtle">{label}</dt>
-      <dd className="mt-0.5 text-sm">{children}</dd>
-    </div>
-  );
 }
 
 export default async function AppointmentDetailPage({ params }: { params: Params }) {
@@ -78,7 +71,15 @@ export default async function AppointmentDetailPage({ params }: { params: Params
         <div className="flex items-center gap-4">
           <Avatar name={name} size="md" />
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight">{name}</h1>
+            <h1 className="text-2xl font-semibold tracking-tight">
+              {patient ? (
+                <Link href={`/patients/${patient.id}`} className="hover:underline">
+                  {name}
+                </Link>
+              ) : (
+                name
+              )}
+            </h1>
             <p className="mt-0.5 flex items-center gap-1.5 text-sm text-muted">
               <CalendarClock className="size-4" aria-hidden />
               {capitalize(formatDate(appointment.startsAt, "long"))} · {formatTime(appointment.startsAt)}–
@@ -146,7 +147,16 @@ export default async function AppointmentDetailPage({ params }: { params: Params
 
         <div className="space-y-4">
           <Card>
-            <CardHeader title="Paciente" />
+            <CardHeader
+              title="Paciente"
+              action={
+                patient ? (
+                  <ButtonLink href={`/patients/${patient.id}`} variant="ghost" size="sm">
+                    Ver perfil
+                  </ButtonLink>
+                ) : null
+              }
+            />
             <CardContent>
               {patient ? (
                 <dl className="space-y-3">
