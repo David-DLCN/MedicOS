@@ -2,7 +2,7 @@
 
 El sistema operativo para médicos independientes y consultorios pequeños.
 
-> **Estado:** prototipo del MVP (Fase 5 en curso: panel, Citas, Pacientes y Finanzas listos). **Todos los datos son ficticios**:
+> **Estado:** prototipo del MVP (Fase 5 completada: panel, Citas, Pacientes, Finanzas y Ajustes). **Todos los datos son ficticios**:
 > pacientes, citas y cifras se generan de forma determinista. No hay backend, autenticación ni
 > pagos reales, y el prototipo **no** cumple ninguna normativa sanitaria.
 
@@ -50,7 +50,7 @@ src/
       appointments/          # Agenda día/semana (?date=YYYY-MM-DD&view=day|week) y detalle /[id]
       patients/              # Listado (?q=&segment=&sort=&page=) y perfil /[id]
       finance/               # Resumen por periodo, pendientes y movimientos (?period=&status=&method=&page=)
-      settings/              # Marcador de la Fase 5
+      settings/              # Pestañas: perfil, consultas e integraciones (solo lectura)
   components/
     ui/                      # Primitivas reutilizables: Card, Badge, Button, Table, Avatar, EmptyState
     layout/                  # AppShell, Sidebar, navegación, PageHeader
@@ -98,7 +98,6 @@ src/
 
 ## Próximos pasos
 
-1. Fase 5: módulo de Ajustes e integraciones con datos ficticios (Citas, Pacientes y Finanzas ya están hechos).
-2. Esquema de Supabase que refleje `lib/domain/types.ts`, más el repositorio real.
-3. Autenticación del médico.
-4. Prototipo del marketplace y del flujo de pago.
+1. Esquema de Supabase que refleje `lib/domain/types.ts`, más el repositorio real.
+2. Autenticación del médico; después, la edición de perfil, consultas y precios en Ajustes.
+3. Prototipo del marketplace y del flujo de pago.

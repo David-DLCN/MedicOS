@@ -221,7 +221,7 @@ export function operationalAlerts(input: {
       severity: "info",
       title: `${noShows} inasistencias en los últimos 7 días`,
       description: "Considera activar recordatorios automáticos.",
-      href: "/settings",
+      href: "/settings/integrations",
     });
   }
 
