@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Video } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -34,7 +35,11 @@ export function UpcomingAppointments({ rows }: { rows: UpcomingAppointmentRow[] 
             {rows.map(({ appointment, patientName, consultationName, isToday }) => {
               const status = APPOINTMENT_STATUS[appointment.status];
               return (
-                <li key={appointment.id} className="flex items-center gap-3 py-3">
+                <li key={appointment.id}>
+                  <Link
+                    href={`/appointments/${appointment.id}`}
+                    className="-mx-5 flex items-center gap-3 px-5 py-3 transition-colors hover:bg-surface-muted"
+                  >
                   <div className="w-16 shrink-0">
                     <p className="tabular text-sm font-semibold">{formatTime(appointment.startsAt)}</p>
                     <p className="text-xs text-subtle">
@@ -44,9 +49,12 @@ export function UpcomingAppointments({ rows }: { rows: UpcomingAppointmentRow[] 
                   <Avatar name={patientName} className="hidden sm:inline-flex" />
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-medium">{patientName}</p>
-                    <p className="flex items-center gap-1 truncate text-xs text-muted">
+                    <p className="truncate text-xs text-muted">
                       {appointment.modality === "video" ? (
-                        <Video className="size-3.5 shrink-0" aria-label={MODALITY_LABEL.video} />
+                        <Video
+                          className="mr-1 inline size-3.5 align-[-3px]"
+                          aria-label={MODALITY_LABEL.video}
+                        />
                       ) : null}
                       {consultationName}
                     </p>
@@ -54,6 +62,7 @@ export function UpcomingAppointments({ rows }: { rows: UpcomingAppointmentRow[] 
                   <Badge tone={status.tone} dot>
                     {status.label}
                   </Badge>
+                  </Link>
                 </li>
               );
             })}

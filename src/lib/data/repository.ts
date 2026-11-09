@@ -66,6 +66,19 @@ export async function listAppointments(range?: DateRange): Promise<Appointment[]
   return data().appointments.filter((appointment) => inRange(appointment.startsAt, range));
 }
 
+export async function getAppointment(id: ID): Promise<Appointment | null> {
+  return data().appointments.find((appointment) => appointment.id === id) ?? null;
+}
+
+export async function listAppointmentsForPatient(patientId: ID): Promise<Appointment[]> {
+  return data().appointments.filter((appointment) => appointment.patientId === patientId);
+}
+
+export async function listTransactionsForAppointments(appointmentIds: ID[]): Promise<Transaction[]> {
+  const ids = new Set(appointmentIds);
+  return data().transactions.filter((transaction) => ids.has(transaction.appointmentId));
+}
+
 export async function listTransactions(range?: DateRange): Promise<Transaction[]> {
   return data().transactions.filter((transaction) => inRange(transaction.createdAt, range));
 }

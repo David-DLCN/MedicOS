@@ -2,7 +2,7 @@
 
 El sistema operativo para médicos independientes y consultorios pequeños.
 
-> **Estado:** prototipo del MVP (Fase 4: panel del médico). **Todos los datos son ficticios**:
+> **Estado:** prototipo del MVP (Fase 5 en curso: panel y módulo de Citas listos). **Todos los datos son ficticios**:
 > pacientes, citas y cifras se generan de forma determinista. No hay backend, autenticación ni
 > pagos reales, y el prototipo **no** cumple ninguna normativa sanitaria.
 
@@ -43,7 +43,8 @@ src/
     (doctor)/                # Doctor OS: todas las pantallas del médico comparten AppShell
       layout.tsx
       dashboard/             # Panel (implementado)
-      appointments/ patients/ finance/ settings/   # Marcadores de la Fase 5
+      appointments/          # Agenda día/semana (?date=YYYY-MM-DD&view=day|week) y detalle /[id]
+      patients/ finance/ settings/   # Marcadores de la Fase 5
   components/
     ui/                      # Primitivas reutilizables: Card, Badge, Button, Table, Avatar, EmptyState
     layout/                  # AppShell, Sidebar, navegación, PageHeader
@@ -91,7 +92,8 @@ src/
 
 ## Próximos pasos
 
-1. Fase 5: módulos de Citas, Pacientes, Finanzas y Ajustes/Integraciones con datos ficticios.
+1. Fase 5: módulos de Pacientes, Finanzas y Ajustes/Integraciones con datos ficticios
+   (Citas ya está hecho).
 2. Esquema de Supabase que refleje `lib/domain/types.ts`, más el repositorio real.
 3. Autenticación del médico.
 4. Prototipo del marketplace y del flujo de pago.

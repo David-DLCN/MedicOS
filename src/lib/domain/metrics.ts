@@ -193,7 +193,7 @@ export function operationalAlerts(input: {
       severity: "warning",
       title: `${unconfirmedSoon} citas sin confirmar`,
       description: "Programadas para hoy, mañana o pasado mañana.",
-      href: "/appointments",
+      href: "/appointments?view=week",
     });
   }
 
