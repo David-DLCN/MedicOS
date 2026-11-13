@@ -110,6 +110,11 @@ src/
 - **Cierre de caja diario** (`lib/domain/cash-close.ts`): cobrado por método, efectivo esperado,
   prepagos en línea y consultas sin cobrar. La suma de cierres coincide con los ingresos del mes.
 
+- **Recordatorios por WhatsApp** (`lib/domain/reminders.ts`): 24 h antes de la cita; el paciente
+  confirma respondiendo «1». La agenda muestra quién confirmó, y el detalle de la cita el mensaje y
+  su historial. En la demo no se envían mensajes: en producción se usará WhatsApp Business
+  Platform con plantillas aprobadas por Meta.
+
 ## Decisiones abiertas
 
 - **Infraestructura de pagos para el marketplace.** Stripe Connect encaja de forma natural con

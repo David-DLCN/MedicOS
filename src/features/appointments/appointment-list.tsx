@@ -7,6 +7,8 @@ import { formatMoney, formatTime } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import type { AppointmentRow } from "./get-appointments-data";
 import { APPOINTMENT_STATUS, CHANNEL_LABEL, MODALITY_LABEL } from "./labels";
+import { ReminderIndicator } from "./reminder-indicator";
+import { reminderState } from "@/lib/domain/reminders";
 
 /** Full-width list of appointments for a single day. */
 export function AppointmentList({ rows, now }: { rows: AppointmentRow[]; now: Date }) {
@@ -76,6 +78,7 @@ function AppointmentListItem({ row, now }: { row: AppointmentRow; now: Date }) {
         )}
       </div>
 
+      <ReminderIndicator state={reminderState(appointment, now)} />
       <Badge tone={status.tone} dot className="shrink-0">
         {status.label}
       </Badge>

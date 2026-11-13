@@ -120,8 +120,9 @@ function paymentMethod(random: Random, channel: BookingChannel): PaymentMethod {
 
 export function generateDataset(seed = 20261109): MockDataset {
   const random = createRandom(seed);
-  // Separate stream so tagging Doctoralia bookings leaves every other figure unchanged.
+  // Separate streams so tagging Doctoralia bookings and reminders leaves every other figure unchanged.
   const channelRandom = createRandom(seed + 1);
+  const reminderRandom = createRandom(seed + 3);
   const patients = buildPatients(random);
   const firstVisit = new Map<string, number>();
   const appointments: Appointment[] = [];
@@ -206,6 +207,23 @@ export function generateDataset(seed = 20261109): MockDataset {
       if (appointment.channel === "phone" && channelRandom.chance(0.45)) {
         appointment.channel = "doctoralia";
         appointment.externalBookingId = `DOC-${channelRandom.int(1_000_000, 9_999_999)}`;
+      }
+
+      // WhatsApp reminders go out 24 h before; most patients confirm by replying.
+      const reminderAt = startsAt - DAY;
+      if (startsAt >= now - 60 * DAY && reminderAt <= now && appointment.status !== "cancelled") {
+        const confirms =
+          appointment.status === "confirmed" || appointment.status === "completed"
+            ? reminderRandom.chance(0.85)
+            : appointment.status === "no_show"
+              ? reminderRandom.chance(0.2)
+              : false;
+        const confirmedAt = reminderAt + reminderRandom.int(3, 240) * MINUTE;
+        appointment.reminder = {
+          channel: "whatsapp",
+          sentAt: iso(reminderAt),
+          ...(confirms && confirmedAt <= now ? { confirmedAt: iso(confirmedAt) } : {}),
+        };
       }
 
       cursor += type.durationMinutes;

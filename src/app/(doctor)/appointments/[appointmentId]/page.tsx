@@ -22,6 +22,8 @@ import {
 import { ageOn } from "@/lib/domain/dates";
 import { canIssueReceipt, receiptHref } from "@/lib/domain/receipts";
 import { canInvoice, selfInvoicePath } from "@/lib/domain/invoicing";
+import { reminderMessage } from "@/lib/domain/reminders";
+import { ReminderCard } from "@/features/appointments/reminder-card";
 import { CopyLinkButton } from "@/components/ui/copy-link-button";
 import { indexById, patientName } from "@/lib/domain/lookup";
 import { capitalize, formatDate, formatMoney, formatNumber, formatTime } from "@/lib/format";
@@ -196,6 +198,18 @@ export default async function AppointmentDetailPage({ params }: { params: Params
               )}
             </CardContent>
           </Card>
+
+          <ReminderCard
+            appointment={appointment}
+            now={now}
+            message={reminderMessage({
+              patientFirstName: patient?.firstName ?? "",
+              doctorName: `${context.doctor.title} ${context.doctor.fullName}`,
+              date: formatDate(appointment.startsAt, "long"),
+              time: formatTime(appointment.startsAt),
+              place: appointment.modality === "video" ? "videollamada" : context.clinic.name,
+            })}
+          />
         </div>
 
         <div className="space-y-4">

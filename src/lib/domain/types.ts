@@ -117,6 +117,15 @@ export interface Appointment {
   channel: BookingChannel;
   /** Booking id in the external system it was synced from (e.g. Doctoralia). */
   externalBookingId?: string;
+  /** Automatic WhatsApp reminder sent before the appointment, if any. */
+  reminder?: AppointmentReminder;
+}
+
+export interface AppointmentReminder {
+  channel: "whatsapp";
+  sentAt: ISODateTime;
+  /** When the patient confirmed by replying to the reminder. */
+  confirmedAt?: ISODateTime;
 }
 
 // ---------------------------------------------------------------------------
