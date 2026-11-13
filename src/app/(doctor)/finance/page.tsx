@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { CircleDollarSign, Clock4, Receipt, Undo2 } from "lucide-react";
+import { Calculator, CircleDollarSign, Clock4, Receipt, Undo2 } from "lucide-react";
 import { PageHeader } from "@/components/layout/page-header";
 import { RevenueChart } from "@/components/charts/revenue-chart";
+import { ButtonLink } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { MetricCard } from "@/components/ui/metric-card";
 import { BreakdownCard } from "@/features/finance/breakdown-card";
@@ -30,7 +31,15 @@ export default async function FinancePage({ searchParams }: { searchParams: Sear
 
   return (
     <>
-      <PageHeader title="Finanzas" description="Ingresos, cobros pendientes y movimientos de tu consulta." />
+      <PageHeader
+        title="Finanzas"
+        description="Ingresos, cobros pendientes y movimientos de tu consulta."
+        actions={
+          <ButtonLink href="/finance/close" variant="secondary">
+            <Calculator className="size-4" aria-hidden /> Cierre de caja
+          </ButtonLink>
+        }
+      />
 
       <div className="space-y-4">
         <PeriodTabs params={params} rangeLabel={rangeLabel} />

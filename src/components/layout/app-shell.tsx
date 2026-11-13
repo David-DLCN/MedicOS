@@ -35,7 +35,7 @@ export function AppShell({
 
   return (
     <div className="min-h-dvh">
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 border-r border-border lg:block">
+      <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 border-r border-border lg:block print:hidden">
         <Sidebar doctor={doctor} />
       </aside>
 
@@ -61,8 +61,8 @@ export function AppShell({
         </div>
       ) : null}
 
-      <div className="lg:pl-64">
-        <header className="sticky top-0 z-20 flex h-16 items-center gap-3 border-b border-border bg-surface/90 px-4 backdrop-blur sm:px-6 lg:px-8">
+      <div className="lg:pl-64 print:pl-0">
+        <header className="sticky top-0 z-20 flex h-16 print:hidden items-center gap-3 border-b border-border bg-surface/90 px-4 backdrop-blur sm:px-6 lg:px-8">
           <button
             type="button"
             onClick={() => setOpen(true)}

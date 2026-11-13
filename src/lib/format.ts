@@ -106,3 +106,8 @@ export function formatBytes(bytes: number) {
   if (bytes < 1024 * 1024) return `${sizeFormatter.format(bytes / 1024)} KB`;
   return `${sizeFormatter.format(bytes / (1024 * 1024))} MB`;
 }
+
+/** "1 cobro" / "3 cobros": count with a singular or plural noun. */
+export function pluralize(count: number, singular: string, plural = `${singular}s`) {
+  return `${formatNumber(count)} ${count === 1 ? singular : plural}`;
+}

@@ -5,7 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import { Logo } from "@/components/layout/logo";
 import { MODALITY_LABEL } from "@/features/appointments/labels";
 import { PAYMENT_METHOD_LABEL } from "@/features/finance/labels";
-import { PrintButton } from "@/features/receipts/print-button";
+import { PrintButton } from "@/components/ui/print-button";
 import { IS_DEMO_DATA } from "@/lib/config";
 import {
   getAppointment,

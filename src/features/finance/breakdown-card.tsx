@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import type { BreakdownItem } from "@/lib/domain/finance";
-import { formatAmount, formatNumber, formatShare } from "@/lib/format";
+import { formatAmount, formatShare, pluralize } from "@/lib/format";
 
 /** Ranked list with a proportional bar: one colour, intensity carries no meaning. */
 export function BreakdownCard<K extends string>({
@@ -34,7 +34,7 @@ export function BreakdownCard<K extends string>({
                 <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-surface-muted" aria-hidden>
                   <div className="h-full rounded-full bg-primary" style={{ width: `${item.share * 100}%` }} />
                 </div>
-                <p className="mt-1 text-xs text-subtle">{formatNumber(item.count)} cobros</p>
+                <p className="mt-1 text-xs text-subtle">{pluralize(item.count, "cobro")}</p>
               </li>
             ))}
           </ul>
