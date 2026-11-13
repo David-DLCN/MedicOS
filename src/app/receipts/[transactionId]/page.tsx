@@ -69,11 +69,11 @@ export default async function ReceiptPage({ params }: { params: Params }) {
             <p className="text-sm text-muted">{doctor.specialty}</p>
             <dl className="mt-3 space-y-0.5 text-sm">
               <div>
-                <dt className="inline text-muted">Nº de colegiado / cédula: </dt>
+                <dt className="inline text-muted">Cédula profesional: </dt>
                 <dd className="inline">{doctor.billing.licenseNumber}</dd>
               </div>
               <div>
-                <dt className="inline text-muted">Identificación fiscal: </dt>
+                <dt className="inline text-muted">RFC: </dt>
                 <dd className="inline">{doctor.billing.taxId}</dd>
               </div>
               <div>

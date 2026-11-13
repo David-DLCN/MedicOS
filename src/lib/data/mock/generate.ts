@@ -66,7 +66,7 @@ function buildPatients(random: Random): Patient[] {
       lastName,
       dateOfBirth: `${year}-${pad(month)}-${pad(day)}`,
       email: `${emailSlug}${n}@example.com`,
-      phone: `+1 555 01${pad(n % 100)} ${pad(random.int(0, 99))}${random.int(0, 9)}`,
+      phone: `+52 81 0000 ${pad(n, 4)}`,
       // Provisional; replaced by the first booking date below.
       createdAt: iso(DEMO_TODAY.getTime() - HISTORY_DAYS * DAY - random.int(1, 60) * DAY),
     });

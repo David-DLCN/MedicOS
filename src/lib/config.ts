@@ -7,9 +7,9 @@
 export const APP_CONFIG = {
   productName: "MedicOS",
   /** Locale used for all number / date formatting. */
-  locale: "es-US",
+  locale: "es-MX",
   /** Default currency for the prototype. All mock amounts use it. */
-  currency: "USD",
+  currency: "MXN",
   /**
    * Time zone used to render dates. The prototype stores and renders every
    * timestamp in UTC so server and client output are identical. Real

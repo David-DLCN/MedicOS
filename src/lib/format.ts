@@ -14,7 +14,7 @@ function currencyFormatter(currency: string, compact: boolean) {
       style: "currency",
       currency,
       ...(compact
-        ? { notation: "compact", maximumFractionDigits: 1 }
+        ? { notation: "compact", minimumFractionDigits: 0, maximumFractionDigits: 1 }
         : { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
     });
     cache.set(currency, formatter);

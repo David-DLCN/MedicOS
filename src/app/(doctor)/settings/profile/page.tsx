@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Field } from "@/components/ui/field";
 import { MODALITY_LABEL } from "@/features/appointments/labels";
+import { TAX_REGIME_LABEL } from "@/features/invoicing/sat-catalogs";
 import { ReadOnlyNote } from "@/features/settings/read-only-note";
 import { getPracticeContext } from "@/lib/data/repository";
 import { formatMoney } from "@/lib/format";
@@ -44,8 +45,10 @@ export default async function ProfileSettingsPage() {
             <CardContent>
               <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Field label="Nombre o razón social">{doctor.billing.legalName}</Field>
-                <Field label="Identificación fiscal">{doctor.billing.taxId}</Field>
-                <Field label="Nº de colegiado / cédula">{doctor.billing.licenseNumber}</Field>
+                <Field label="RFC">{doctor.billing.taxId}</Field>
+                <Field label="Régimen fiscal">{TAX_REGIME_LABEL[doctor.billing.taxRegime] ?? doctor.billing.taxRegime}</Field>
+                <Field label="Cédula profesional">{doctor.billing.licenseNumber}</Field>
+                <Field label="Código postal fiscal">{doctor.billing.postalCode}</Field>
                 <Field label="Dirección fiscal">{doctor.billing.address}</Field>
               </dl>
             </CardContent>

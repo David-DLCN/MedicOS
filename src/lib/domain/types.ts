@@ -45,13 +45,17 @@ export interface ConsultationType {
   modality: ConsultationModality;
 }
 
-/** Data printed on receipts and invoices. Requirements vary by country. */
+/** Fiscal data printed on receipts and CFDI invoices (Mexico, SAT). */
 export interface DoctorBilling {
-  /** Legal name the receipts are issued under. */
+  /** Legal name the invoices are issued under (as registered with the SAT). */
   legalName: string;
-  /** Tax identification number (NIF, RFC, RUT…). */
+  /** RFC of the issuer. */
   taxId: string;
-  /** Professional licence / registration number (nº de colegiado, cédula profesional…). */
+  /** SAT fiscal regime, e.g. "612". */
+  taxRegime: string;
+  /** Postal code of the fiscal address (required by CFDI 4.0). */
+  postalCode: string;
+  /** Cédula profesional. */
   licenseNumber: string;
   address: string;
 }

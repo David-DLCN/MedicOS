@@ -1,7 +1,7 @@
 /**
  * Static, fictional seed data. Every person, phone number and e-mail here is
- * invented: phones use the reserved 555-01xx range and e-mails use the
- * reserved example.com domain.
+ * invented: phone numbers use the invalid "0000" exchange, e-mails use the
+ * reserved example.com domain and the RFC / cédula start with "DEMO".
  */
 import type { Clinic, ConsultationType, Doctor, Integration } from "@/lib/domain/types";
 import { APP_CONFIG } from "@/lib/config";
@@ -11,7 +11,7 @@ const currency = APP_CONFIG.currency;
 export const clinic: Clinic = {
   id: "clinic_demo",
   name: "Consultorio Herrera",
-  city: "Ciudad Demo",
+  city: "Monterrey, N.L.",
 };
 
 export const doctor: Doctor = {
@@ -21,12 +21,14 @@ export const doctor: Doctor = {
   title: "Dra.",
   specialty: "Medicina interna",
   email: "lucia.herrera@example.com",
-  phone: "+1 555 0100",
+  phone: "+52 81 0000 0100",
   billing: {
     legalName: "Lucía Herrera Ortiz",
-    taxId: "DEMO-00000000-X",
-    licenseNumber: "DEMO-12345",
-    address: "Calle Ejemplo 123, consultorio 4, Ciudad Demo",
+    taxId: "DEMO800515XX0",
+    taxRegime: "612",
+    postalCode: "64000",
+    licenseNumber: "DEMO-1234567",
+    address: "Av. Ejemplo 123, consultorio 4, Col. Centro, Monterrey, N.L.",
   },
 };
 
@@ -36,7 +38,7 @@ export const consultationTypes: ConsultationType[] = [
     doctorId: doctor.id,
     name: "Primera consulta",
     durationMinutes: 45,
-    price: { amount: 8000, currency },
+    price: { amount: 120000, currency },
     modality: "in_person",
   },
   {
@@ -44,7 +46,7 @@ export const consultationTypes: ConsultationType[] = [
     doctorId: doctor.id,
     name: "Consulta de seguimiento",
     durationMinutes: 30,
-    price: { amount: 5500, currency },
+    price: { amount: 90000, currency },
     modality: "in_person",
   },
   {
@@ -52,7 +54,7 @@ export const consultationTypes: ConsultationType[] = [
     doctorId: doctor.id,
     name: "Teleconsulta",
     durationMinutes: 30,
-    price: { amount: 5000, currency },
+    price: { amount: 80000, currency },
     modality: "video",
   },
   {
@@ -60,7 +62,7 @@ export const consultationTypes: ConsultationType[] = [
     doctorId: doctor.id,
     name: "Revisión de resultados",
     durationMinutes: 15,
-    price: { amount: 3500, currency },
+    price: { amount: 60000, currency },
     modality: "in_person",
   },
 ];
@@ -103,10 +105,10 @@ export const integrations: Integration[] = [
     status: "planned",
   },
   {
-    id: "int_accounting",
-    name: "Contabilidad",
+    id: "int_cfdi",
+    name: "Timbrado CFDI 4.0",
     category: "accounting",
-    description: "Exporta ingresos y comprobantes a tu software contable.",
+    description: "Facturas timbradas ante el SAT mediante un proveedor certificado (PAC), con autofactura para tus pacientes.",
     status: "planned",
   },
 ];

@@ -77,7 +77,7 @@ src/
    ellas: los ingresos siempre corresponden a consultas concretas. Reglas: las consultas
    realizadas se cobran (las recientes pueden quedar pendientes); las reservas online se
    prepagan; las inasistencias conservan el pago; las cancelaciones se reembolsan.
-4. **Dinero en unidades menores** (`{ amount: 5500, currency: "USD" }`) para evitar errores de
+4. **Dinero en unidades menores** (`{ amount: 90000, currency: "MXN" }`) para evitar errores de
    coma flotante.
 5. **Fechas en UTC y un "hoy" fijo** (`DEMO_NOW` en `lib/config.ts`) para que la demo sea
    estable y el HTML del servidor coincida con el del cliente. Las zonas horarias por consultorio
@@ -109,7 +109,7 @@ src/
 - **Facturación fiscal**: los recibos actuales sirven como comprobante para la aseguradora, pero
   una factura legal depende del país (p. ej. factura con NIF en España; CFDI timbrado en México).
   Hay que definir el país o países de lanzamiento y el proveedor de facturación electrónica.
-- Moneda, locale y zona horaria por consultorio (hoy: USD, `es-US`, UTC en `lib/config.ts`).
+- Moneda, locale y zona horaria por consultorio (hoy: MXN, `es-MX`, UTC en `lib/config.ts`; mercado inicial: México, empezando por el norte).
 - Autenticación y autorización (probablemente Supabase Auth con Row Level Security por `doctorId`).
 - Modo oscuro (los tokens ya lo permiten).
 
