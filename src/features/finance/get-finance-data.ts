@@ -3,6 +3,7 @@ import {
   getNow,
   getPracticeContext,
   listAppointments,
+  listInvoices,
   listPatients,
   listTransactions,
 } from "@/lib/data/repository";
@@ -27,16 +28,20 @@ export interface TransactionView {
   patientId: string;
   patientName: string;
   consultationName: string;
+  /** CFDI folio when the payment has been invoiced. */
+  invoiceFolio: string | null;
 }
 
 export async function getFinanceData(params: FinanceParams) {
   const now = getNow();
-  const [context, patients, appointments, transactions] = await Promise.all([
+  const [context, patients, appointments, transactions, invoices] = await Promise.all([
     getPracticeContext(),
     listPatients(),
     listAppointments(),
     listTransactions(),
+    listInvoices(),
   ]);
+  const invoiceByTransaction = new Map(invoices.map((invoice) => [invoice.transactionId, invoice]));
 
   const patientsById = indexById(patients);
   const appointmentsById = indexById(appointments);
@@ -50,6 +55,7 @@ export async function getFinanceData(params: FinanceParams) {
     patientId: transaction.patientId,
     patientName: patientName(patientsById.get(transaction.patientId)),
     consultationName: consultationTypeOf(transaction.appointmentId)?.name ?? "Consulta",
+    invoiceFolio: invoiceByTransaction.get(transaction.id)?.folio ?? null,
   });
 
   const ranges = periodRanges(params.period, now);

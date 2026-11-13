@@ -120,7 +120,7 @@ export function TransactionsTable({
                   </tr>
                 </thead>
                 <tbody>
-                  {rows.map(({ transaction, patientId, patientName, consultationName }) => {
+                  {rows.map(({ transaction, patientId, patientName, consultationName, invoiceFolio }) => {
                     const status = PAYMENT_STATUS[transaction.status];
                     return (
                       <tr key={transaction.id}>
@@ -138,6 +138,11 @@ export function TransactionsTable({
                         <Td className="text-muted">{PAYMENT_METHOD_LABEL[transaction.method]}</Td>
                         <Td>
                           <Badge tone={status.tone}>{status.label}</Badge>
+                          {invoiceFolio ? (
+                            <span className="mt-1 block text-xs text-muted" title="Factura CFDI emitida">
+                              CFDI {invoiceFolio}
+                            </span>
+                          ) : null}
                         </Td>
                         <Td
                           className={cn(

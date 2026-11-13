@@ -27,3 +27,14 @@ export const GENERIC_PUBLIC_RFC = "XAXX010101000";
 
 /** SAT product/service key for medical consultation services. */
 export const MEDICAL_SERVICE_KEY = "85121600";
+
+/** c_FormaPago for each payment method used in MedicOS. */
+export const PAYMENT_FORM_LABEL: Record<string, string> = {
+  cash: "01 · Efectivo",
+  transfer: "03 · Transferencia electrónica de fondos",
+  card: "04 · Tarjeta de crédito",
+  apple_pay: "04 · Tarjeta de crédito",
+};
+
+/** c_MetodoPago: consultations are paid in full at once. */
+export const PAYMENT_METHOD_PUE = "PUE · Pago en una sola exhibición";

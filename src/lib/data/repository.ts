@@ -16,19 +16,25 @@ import type {
   Doctor,
   ID,
   Integration,
+  Invoice,
   Patient,
   PatientDocument,
   Transaction,
 } from "@/lib/domain/types";
 import { generateSampleDocuments } from "./mock/documents";
+import { generateSampleInvoices } from "./mock/invoices";
 import { generateDataset, type MockDataset } from "./mock/generate";
 import { clinic, consultationTypes, doctor, integrations } from "./mock/seed";
 
-let dataset: (MockDataset & { documents: PatientDocument[] }) | null = null;
+let dataset: (MockDataset & { documents: PatientDocument[]; invoices: Invoice[] }) | null = null;
 function data() {
   if (!dataset) {
     const generated = generateDataset();
-    dataset = { ...generated, documents: generateSampleDocuments(generated.appointments) };
+    dataset = {
+      ...generated,
+      documents: generateSampleDocuments(generated.appointments),
+      invoices: generateSampleInvoices(generated.transactions, generated.patients),
+    };
   }
   return dataset;
 }
@@ -100,6 +106,14 @@ export async function listDocumentsForPatient(patientId: ID): Promise<PatientDoc
   return data()
     .documents.filter((doc) => doc.patientId === patientId)
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+}
+
+export async function getInvoiceForTransaction(transactionId: ID): Promise<Invoice | null> {
+  return data().invoices.find((invoice) => invoice.transactionId === transactionId) ?? null;
+}
+
+export async function listInvoices(): Promise<Invoice[]> {
+  return data().invoices;
 }
 
 export async function listIntegrations(): Promise<Integration[]> {

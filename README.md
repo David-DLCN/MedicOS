@@ -52,6 +52,8 @@ src/
       finance/               # Resumen por periodo, pendientes y movimientos (?period=&status=&method=&page=)
       settings/              # Pestañas: perfil, consultas e integraciones (solo lectura)
     receipts/[transactionId] # Recibo de honorarios imprimible / PDF (fuera del menú, para imprimir)
+    facturar/[token]         # Autofactura CFDI pública para el paciente (sin cuenta, pensada para celular)
+    (doctor)/finance/close   # Cierre de caja diario
   components/
     ui/                      # Primitivas reutilizables: Card, Badge, Button, Table, Avatar, EmptyState
     layout/                  # AppShell, Sidebar, navegación, PageHeader
@@ -100,15 +102,23 @@ src/
 - **Doctoralia integrado, no sustituido**: canal de reserva propio en la agenda y plan técnico en
   [`docs/integraciones/doctoralia.md`](docs/integraciones/doctoralia.md).
 
+- **Facturación CFDI 4.0 con autofactura**: cada pago cobrado tiene un enlace que el médico comparte
+  (por ejemplo, por WhatsApp). El paciente captura RFC, nombre, régimen, C.P. y uso (D01 por
+  defecto; G03 si es empresa) y ve su factura: honorarios **exentos de IVA** y **retención del
+  10 % de ISR** cuando factura una persona moral (`lib/domain/invoicing.ts`). En la demo no se
+  timbra: en producción se conectará un PAC certificado con la e.firma (CSD) del médico.
+- **Cierre de caja diario** (`lib/domain/cash-close.ts`): cobrado por método, efectivo esperado,
+  prepagos en línea y consultas sin cobrar. La suma de cierres coincide con los ingresos del mes.
+
 ## Decisiones abiertas
 
 - **Infraestructura de pagos para el marketplace.** Stripe Connect encaja de forma natural con
   muchos médicos, comisiones de plataforma, pagos a médicos y reembolsos por cita. Shopify no
   está pensado para repartir pagos entre varios proveedores, así que necesita una evaluación
   aparte antes de adoptarlo.
-- **Facturación fiscal**: los recibos actuales sirven como comprobante para la aseguradora, pero
-  una factura legal depende del país (p. ej. factura con NIF en España; CFDI timbrado en México).
-  Hay que definir el país o países de lanzamiento y el proveedor de facturación electrónica.
+- **Proveedor de timbrado (PAC)** para CFDI 4.0 y gestión de los CSD de cada médico.
+- **Expediente clínico**: cuando se guarde historia clínica real, cumplir la NOM-024-SSA3-2012 y la
+  NOM-004-SSA3-2012.
 - Moneda, locale y zona horaria por consultorio (hoy: MXN, `es-MX`, UTC en `lib/config.ts`; mercado inicial: México, empezando por el norte).
 - Autenticación y autorización (probablemente Supabase Auth con Row Level Security por `doctorId`).
 - Modo oscuro (los tokens ya lo permiten).

@@ -12,6 +12,7 @@ import { APPOINTMENT_STATUS, CHANNEL_LABEL, MODALITY_LABEL } from "@/features/ap
 import { PAYMENT_METHOD_LABEL, PAYMENT_STATUS } from "@/features/finance/labels";
 import {
   getAppointment,
+  getInvoiceForTransaction,
   getNow,
   getPatient,
   getPracticeContext,
@@ -20,6 +21,8 @@ import {
 } from "@/lib/data/repository";
 import { ageOn } from "@/lib/domain/dates";
 import { canIssueReceipt, receiptHref } from "@/lib/domain/receipts";
+import { canInvoice, selfInvoicePath } from "@/lib/domain/invoicing";
+import { CopyLinkButton } from "@/components/ui/copy-link-button";
 import { indexById, patientName } from "@/lib/domain/lookup";
 import { capitalize, formatDate, formatMoney, formatNumber, formatTime } from "@/lib/format";
 import { cn } from "@/lib/utils";
@@ -46,6 +49,7 @@ export default async function AppointmentDetailPage({ params }: { params: Params
   ]);
   const payments = await listTransactionsForAppointments([appointment.id]);
   const payment = payments[0] ?? null;
+  const invoice = payment ? await getInvoiceForTransaction(payment.id) : null;
 
   const typesById = indexById(context.consultationTypes);
   const consultation = typesById.get(appointment.consultationTypeId);
@@ -136,19 +140,53 @@ export default async function AppointmentDetailPage({ params }: { params: Params
             />
             <CardContent>
               {payment ? (
-                <dl className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-                  <Field label="Estado">
-                    <Badge tone={PAYMENT_STATUS[payment.status].tone}>{PAYMENT_STATUS[payment.status].label}</Badge>
-                  </Field>
-                  <Field label="Importe">
-                    <span className="tabular font-medium">{formatMoney(payment.amount)}</span>
-                  </Field>
-                  <Field label="Método">{PAYMENT_METHOD_LABEL[payment.method]}</Field>
-                  <Field label="Registrado">{formatDate(payment.createdAt)}</Field>
-                  <Field label={payment.status === "refunded" ? "Reembolsado" : "Liquidado"}>
-                    {payment.settledAt ? formatDate(payment.settledAt) : "Pendiente"}
-                  </Field>
-                </dl>
+                <>
+                  <dl className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+                    <Field label="Estado">
+                      <Badge tone={PAYMENT_STATUS[payment.status].tone}>{PAYMENT_STATUS[payment.status].label}</Badge>
+                    </Field>
+                    <Field label="Importe">
+                      <span className="tabular font-medium">{formatMoney(payment.amount)}</span>
+                    </Field>
+                    <Field label="Método">{PAYMENT_METHOD_LABEL[payment.method]}</Field>
+                    <Field label="Registrado">{formatDate(payment.createdAt)}</Field>
+                    <Field label={payment.status === "refunded" ? "Reembolsado" : "Liquidado"}>
+                      {payment.settledAt ? formatDate(payment.settledAt) : "Pendiente"}
+                    </Field>
+                  </dl>
+                  {canInvoice(payment) ? (
+                    <div className="mt-5 border-t border-border pt-4">
+                      {invoice ? (
+                        <div className="flex flex-wrap items-start justify-between gap-3">
+                          <div className="text-sm">
+                            <p className="flex items-center gap-2 font-medium">
+                              <Badge tone="primary">CFDI emitido</Badge> Folio {invoice.folio}
+                            </p>
+                            <p className="mt-1 text-xs text-muted">
+                              {invoice.receiver.name} · RFC {invoice.receiver.rfc} · {formatDate(invoice.issuedAt)}
+                            </p>
+                            <p className="mt-0.5 text-xs break-all text-subtle">Folio fiscal {invoice.uuid}</p>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex flex-wrap items-center justify-between gap-3">
+                          <div className="text-sm">
+                            <p className="font-medium">Sin factura</p>
+                            <p className="text-xs text-muted">
+                              Envía al paciente su enlace de autofactura: él captura sus datos y la factura se genera sola.
+                            </p>
+                          </div>
+                          <div className="flex gap-2">
+                            <CopyLinkButton path={selfInvoicePath(payment)} label="Copiar enlace de factura" />
+                            <ButtonLink href={selfInvoicePath(payment)} variant="ghost" size="sm" target="_blank">
+                              Abrir
+                            </ButtonLink>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ) : null}
+                </>
               ) : (
                 <p className="text-sm text-muted">
                   {appointment.status === "cancelled" || appointment.status === "no_show"

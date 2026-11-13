@@ -184,3 +184,35 @@ export interface PatientDocument {
   /** For receipts: the transaction it documents. */
   transactionId?: ID;
 }
+
+// ---------------------------------------------------------------------------
+// CFDI invoices (Mexico, SAT)
+// ---------------------------------------------------------------------------
+
+/** Fiscal data of the person or company the invoice is issued to. */
+export interface CfdiReceiver {
+  rfc: string;
+  /** Name exactly as in the receiver's constancia de situación fiscal. */
+  name: string;
+  taxRegime: string;
+  postalCode: string;
+  /** c_UsoCFDI, usually D01 for medical fees. */
+  cfdiUse: string;
+  email: string;
+}
+
+export interface Invoice {
+  id: ID;
+  transactionId: ID;
+  patientId: ID;
+  /** Series + sequential folio, e.g. "A-1024". */
+  folio: string;
+  /** Folio fiscal (UUID) assigned when the PAC stamps the CFDI. */
+  uuid: string;
+  issuedAt: ISODateTime;
+  receiver: CfdiReceiver;
+  /** Total of the consultation (minor units). */
+  subtotal: Money;
+  /** ISR withheld when the receiver is a company (persona moral), minor units. */
+  isrWithheld: number;
+}
