@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { SUPABASE_KEY, SUPABASE_URL, isSupabaseConfigured } from "@/lib/supabase/env";
 
 /** Pages anyone can open without signing in (live mode). */
-const PUBLIC_PREFIXES = ["/login", "/auth", "/facturar"];
+const PUBLIC_PREFIXES = ["/login", "/auth", "/facturar", "/api/health"];
 
 /**
  * Live mode: refreshes the Supabase session cookie on every request and sends
