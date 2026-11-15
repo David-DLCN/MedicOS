@@ -15,7 +15,7 @@ import {
 } from "@/lib/data/repository";
 import { patientName } from "@/lib/domain/lookup";
 import { canIssueReceipt, receiptNumber } from "@/lib/domain/receipts";
-import { formatDate, formatMoney, formatTime } from "@/lib/format";
+import { formatDate, formatMoney, formatTime, formatCalendarDate } from "@/lib/format";
 
 type Params = Promise<{ transactionId: string }>;
 
@@ -107,7 +107,7 @@ export default async function ReceiptPage({ params }: { params: Params }) {
           <div>
             <h2 className="text-xs font-medium tracking-wide text-subtle uppercase">Paciente</h2>
             <p className="mt-1 font-semibold">{patientName(patient)}</p>
-            <p className="text-sm text-muted">Fecha de nacimiento: {formatDate(`${patient.dateOfBirth}T00:00:00Z`)}</p>
+            <p className="text-sm text-muted">Fecha de nacimiento: {formatCalendarDate(patient.dateOfBirth)}</p>
           </div>
           <div>
             <h2 className="text-xs font-medium tracking-wide text-subtle uppercase">Lugar de atención</h2>

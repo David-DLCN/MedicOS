@@ -1,0 +1,66 @@
+"use server";
+
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
+
+export interface AuthState {
+  error?: string;
+  message?: string;
+}
+
+const ERRORS: Record<string, string> = {
+  "Invalid login credentials": "Correo o contraseña incorrectos.",
+  "Email not confirmed": "Confirma tu correo: te enviamos un enlace al registrarte.",
+  "User already registered": "Ya existe una cuenta con ese correo. Inicia sesión.",
+};
+
+function translate(message: string) {
+  if (message.toLowerCase().includes("password should be")) return "La contraseña debe tener al menos 8 caracteres.";
+  if (message.toLowerCase().includes("rate limit")) return "Demasiados intentos. Espera unos minutos y vuelve a intentarlo.";
+  return ERRORS[message] ?? "No pudimos completar la operación. Inténtalo de nuevo.";
+}
+
+/** Only allow redirects to paths inside the app (avoid open redirects). */
+function safeNext(value: FormDataEntryValue | null) {
+  const next = typeof value === "string" ? value : "";
+  return next.startsWith("/") && !next.startsWith("//") ? next : "/dashboard";
+}
+
+export async function signIn(_: AuthState, form: FormData): Promise<AuthState> {
+  const email = String(form.get("email") ?? "").trim();
+  const password = String(form.get("password") ?? "");
+  if (!email || !password) return { error: "Escribe tu correo y tu contraseña." };
+
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  if (error) return { error: translate(error.message) };
+  redirect(safeNext(form.get("next")));
+}
+
+export async function signUp(_: AuthState, form: FormData): Promise<AuthState> {
+  const email = String(form.get("email") ?? "").trim();
+  const password = String(form.get("password") ?? "");
+  if (!email) return { error: "Escribe tu correo." };
+  if (password.length < 8) return { error: "La contraseña debe tener al menos 8 caracteres." };
+
+  const origin = (await headers()).get("origin") ?? "";
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: { emailRedirectTo: `${origin}/auth/callback?next=/onboarding` },
+  });
+  if (error) return { error: translate(error.message) };
+  // With e-mail confirmation enabled there is no session until the link is opened.
+  if (!data.session) {
+    return { message: `Te enviamos un enlace a ${email}. Ábrelo para activar tu cuenta.` };
+  }
+  redirect("/onboarding");
+}
+
+export async function signOut() {
+  const supabase = await createSupabaseServerClient();
+  await supabase.auth.signOut();
+  redirect("/login");
+}

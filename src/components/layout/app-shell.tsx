@@ -13,11 +13,13 @@ export function AppShell({
   doctor,
   todayLabel,
   isDemo,
+  canSignOut = false,
   children,
 }: {
   doctor: SidebarDoctor;
   todayLabel: string;
   isDemo: boolean;
+  canSignOut?: boolean;
   children: React.ReactNode;
 }) {
   const [open, setOpen] = useState(false);
@@ -36,7 +38,7 @@ export function AppShell({
   return (
     <div className="min-h-dvh">
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 border-r border-border lg:block print:hidden">
-        <Sidebar doctor={doctor} />
+        <Sidebar doctor={doctor} canSignOut={canSignOut} />
       </aside>
 
       {open ? (
@@ -48,7 +50,7 @@ export function AppShell({
             onClick={() => setOpen(false)}
           />
           <div className="absolute inset-y-0 left-0 w-72 max-w-[85vw] shadow-xl">
-            <Sidebar doctor={doctor} onNavigate={() => setOpen(false)} />
+            <Sidebar doctor={doctor} canSignOut={canSignOut} onNavigate={() => setOpen(false)} />
             <button
               type="button"
               aria-label="Cerrar menú"

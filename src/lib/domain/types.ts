@@ -151,6 +151,8 @@ export interface Transaction {
   createdAt: ISODateTime;
   /** When the money was actually received (paid / refunded transactions). */
   settledAt: ISODateTime | null;
+  /** Unguessable token for the patient's public self-invoice link (live mode). */
+  invoiceToken?: string;
 }
 
 // ---------------------------------------------------------------------------

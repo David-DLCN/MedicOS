@@ -27,6 +27,39 @@ npm run lint       # ESLint
 npm run build      # build de producción
 ```
 
+## Modo demo y modo real
+
+| | Modo demo | Modo real (Supabase) |
+| --- | --- | --- |
+| Cuándo | Sin variables de Supabase | Con `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY` |
+| Datos | Ficticios, deterministas | Los del médico, en PostgreSQL |
+| Acceso | Abierto | Inicio de sesión; cada médico ve **solo** sus datos (Row Level Security) |
+| Hora | UTC (para que la demo no cambie) | Hora del consultorio (Monterrey, UTC−6) |
+
+### Activar el modo real
+
+1. Crea un proyecto en [supabase.com](https://supabase.com).
+2. **SQL Editor** → pega y ejecuta [`supabase/migrations/20261115000000_initial_schema.sql`](supabase/migrations/20261115000000_initial_schema.sql).
+3. **Authentication → URL Configuration**: *Site URL* = tu dirección de Vercel; en *Redirect URLs*
+   añade `https://TU-APP.vercel.app/auth/callback` y `http://localhost:3000/auth/callback`.
+4. **Project Settings → API Keys / Data API**: copia la *Project URL* y la clave **pública**
+   (*publishable* o *anon*). Nunca uses la *service_role / secret key* en la app.
+5. En Vercel (**Settings → Environment Variables**) y en un `.env.local` (ver `.env.example`)
+   define `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY`, y vuelve a desplegar.
+
+Al entrar por primera vez, el médico crea su cuenta, configura su consultorio (nombre, especialidad,
+ciudad) y puede **cargar datos de ejemplo** en su cuenta para explorar la app.
+
+### Seguridad de los datos
+
+- `supabase/migrations/`: tablas, funciones y políticas. Toda tabla con datos del médico tiene
+  `doctor_id`, Row Level Security y llaves foráneas compuestas `(doctor_id, id)` para que ninguna
+  fila pueda apuntar a datos de otro médico.
+- La autofactura pública usa un **token aleatorio** por cobro y una función que devuelve solo lo
+  necesario (`self_invoice_context`).
+- Probado en PostgreSQL 16: un médico no puede leer, modificar ni insertar datos de otro, y un
+  visitante sin sesión no ve pacientes.
+
 ## Stack
 
 | Capa | Elección | Nota |
@@ -35,7 +68,7 @@ npm run build      # build de producción
 | Estilos | Tailwind CSS v4 con tokens semánticos en `src/app/globals.css` (paleta de 4 colores) | Componentes al estilo shadcn/ui, escritos a mano (sin CLI) |
 | Gráficos | Recharts | |
 | Iconos | lucide-react | |
-| Datos | Repositorio en memoria con datos ficticios | Preparado para Supabase/PostgreSQL |
+| Datos | Demo en memoria o Supabase (PostgreSQL + Auth) según la configuración | `@supabase/ssr` con sesión en cookies |
 | Despliegue | Vercel (previsto) | |
 
 ## Estructura
@@ -130,6 +163,8 @@ src/
 
 ## Próximos pasos
 
-1. Esquema de Supabase que refleje `lib/domain/types.ts`, más el repositorio real.
-2. Autenticación del médico; después, la edición de perfil, consultas y precios en Ajustes.
-3. Prototipo del marketplace y del flujo de pago.
+1. Registrar pacientes y citas reales desde la app (hoy el modo real lee datos; aún no hay formularios de alta).
+2. Documentos del paciente en Supabase Storage (hoy se guardan en el navegador).
+3. Edición de perfil, datos fiscales, consultas y precios en Ajustes.
+4. Timbrado CFDI real con un PAC y envío de recordatorios por WhatsApp Business.
+5. Aviso de privacidad y consentimiento (LFPDPPP) antes de guardar datos reales de pacientes.

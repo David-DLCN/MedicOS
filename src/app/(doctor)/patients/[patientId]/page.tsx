@@ -22,7 +22,7 @@ import { ageOn } from "@/lib/domain/dates";
 import { indexById, patientName } from "@/lib/domain/lookup";
 import { summarizePatients } from "@/lib/domain/patients";
 import { canIssueReceipt, receiptDocument, receiptHref } from "@/lib/domain/receipts";
-import { capitalize, formatAmount, formatDate, formatMoney, formatNumber, formatTime } from "@/lib/format";
+import { capitalize, formatAmount, formatDate, formatMoney, formatNumber, formatTime, formatCalendarDate } from "@/lib/format";
 
 type Params = Promise<{ patientId: string }>;
 
@@ -224,7 +224,7 @@ export default async function PatientProfilePage({ params }: { params: Params })
                     <Phone className="size-3.5 shrink-0" aria-hidden /> {patient.phone}
                   </a>
                 </Field>
-                <Field label="Fecha de nacimiento">{formatDate(`${patient.dateOfBirth}T00:00:00Z`)}</Field>
+                <Field label="Fecha de nacimiento">{formatCalendarDate(patient.dateOfBirth)}</Field>
               </dl>
             </CardContent>
           </Card>

@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { LogOut } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
+import { signOut } from "@/features/auth/actions";
 import { cn } from "@/lib/utils";
 import { Logo } from "./logo";
 import { NAV_ITEMS, isActive } from "./nav-items";
@@ -17,9 +19,11 @@ export interface SidebarDoctor {
 /** Light navigation rail: a professional app avoids dark backgrounds (docs/guia-de-diseno.md). */
 export function Sidebar({
   doctor,
+  canSignOut = false,
   onNavigate,
 }: {
   doctor: SidebarDoctor;
+  canSignOut?: boolean;
   onNavigate?: () => void;
 }) {
   const pathname = usePathname();
@@ -66,6 +70,16 @@ export function Sidebar({
             </p>
           </div>
         </div>
+        {canSignOut ? (
+          <form action={signOut} className="mt-3">
+            <button
+              type="submit"
+              className="flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-sm text-muted transition-colors hover:bg-surface-muted hover:text-foreground"
+            >
+              <LogOut className="size-4" aria-hidden /> Cerrar sesión
+            </button>
+          </form>
+        ) : null}
       </div>
     </div>
   );

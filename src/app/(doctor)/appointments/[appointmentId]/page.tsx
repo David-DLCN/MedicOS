@@ -26,7 +26,7 @@ import { reminderMessage } from "@/lib/domain/reminders";
 import { ReminderCard } from "@/features/appointments/reminder-card";
 import { CopyLinkButton } from "@/components/ui/copy-link-button";
 import { indexById, patientName } from "@/lib/domain/lookup";
-import { capitalize, formatDate, formatMoney, formatNumber, formatTime } from "@/lib/format";
+import { capitalize, formatDate, formatMoney, formatNumber, formatTime, formatCalendarDate } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 type Params = Promise<{ appointmentId: string }>;
@@ -229,7 +229,7 @@ export default async function AppointmentDetailPage({ params }: { params: Params
                 <dl className="space-y-3">
                   <Field label="Edad">
                     {formatNumber(ageOn(patient.dateOfBirth, now))} años ·{" "}
-                    <span className="text-muted">{formatDate(`${patient.dateOfBirth}T00:00:00Z`)}</span>
+                    <span className="text-muted">{formatCalendarDate(patient.dateOfBirth)}</span>
                   </Field>
                   <Field label="Contacto">
                     <span className="flex items-center gap-1.5 break-all">

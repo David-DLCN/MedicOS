@@ -55,9 +55,9 @@ export function canInvoice(transaction: Transaction) {
 }
 
 /**
- * Public self-invoice link the patient receives. In production the token must
- * be a random, unguessable value stored with the transaction (and expire).
+ * Public self-invoice link the patient receives. In live mode the token is a
+ * random UUID stored with the transaction; the demo uses the transaction id.
  */
 export function selfInvoicePath(transaction: Transaction) {
-  return `/facturar/${transaction.id}`;
+  return `/facturar/${transaction.invoiceToken ?? transaction.id}`;
 }

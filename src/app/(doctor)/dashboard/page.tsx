@@ -9,18 +9,26 @@ import { getDashboardData } from "@/features/dashboard/get-dashboard-data";
 import { MetricCard } from "@/components/ui/metric-card";
 import { RecentTransactions } from "@/features/dashboard/recent-transactions";
 import { UpcomingAppointments } from "@/features/dashboard/upcoming-appointments";
+import { EmptyPractice } from "@/features/onboarding/empty-practice";
+import { IS_LIVE } from "@/lib/config";
+import { getPracticeContext, listPatients } from "@/lib/data/repository";
+import { localHour } from "@/lib/domain/dates";
 import { formatAmount, formatNumber } from "@/lib/format";
 
 export const metadata: Metadata = { title: "Panel" };
 
 function greeting(now: Date) {
-  const hour = now.getUTCHours();
+  const hour = localHour(now);
   if (hour < 12) return "Buenos días";
   if (hour < 20) return "Buenas tardes";
   return "Buenas noches";
 }
 
 export default async function DashboardPage() {
+  if (IS_LIVE && (await listPatients()).length === 0) {
+    const { doctor } = await getPracticeContext();
+    return <EmptyPractice firstName={doctor.fullName.split(" ")[0] ?? ""} />;
+  }
   const data = await getDashboardData();
   const { metrics } = data;
   const comparison = `vs. mismo periodo de ${data.previousMonthLabel}`;

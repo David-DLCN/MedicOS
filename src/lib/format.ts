@@ -81,6 +81,17 @@ export function formatDate(value: string | Date, format: DateFormat = "medium") 
   return dateFormatters[format].format(typeof value === "string" ? new Date(value) : value);
 }
 
+const calendarDateFormatter = new Intl.DateTimeFormat(locale, {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+  timeZone: "UTC",
+});
+/** Format a date-only value ("1990-05-02"), e.g. a birth date, with no time-zone shift. */
+export function formatCalendarDate(isoDate: string) {
+  return calendarDateFormatter.format(new Date(`${isoDate}T00:00:00Z`));
+}
+
 export function formatTime(value: string | Date) {
   return formatDate(value, "time");
 }

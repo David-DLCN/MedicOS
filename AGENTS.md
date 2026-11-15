@@ -20,7 +20,12 @@ Cumple **`docs/guia-de-diseno.md`** en toda pantalla nueva o modificada. En resu
 
 ## Reglas de código
 
-- La UI lee datos **solo** a través de `src/lib/data/repository.ts`.
+- La UI lee datos **solo** a través de `src/lib/data/repository.ts`, que elige la fuente demo
+  (`lib/data/mock/source.ts`) o Supabase (`lib/data/supabase/source.ts`). Ambas implementan
+  `DataSource` (`lib/data/types.ts`): cualquier función nueva va en las dos.
+- Cambios de base de datos: nueva migración en `supabase/migrations/` con RLS en toda tabla nueva.
+- Fechas de calendario con `lib/domain/dates.ts` (respeta la zona horaria del consultorio); fechas
+  sin hora (nacimiento) con `formatCalendarDate`.
 - Ninguna cifra se escribe a mano en un componente: se calcula en `src/lib/domain/metrics.ts`.
 - Los datos de prueba se separan de la presentación. Nunca se usan datos reales de pacientes.
 - El dinero se guarda en unidades menores (céntimos). Las fechas, en ISO UTC.
