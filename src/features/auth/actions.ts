@@ -28,9 +28,10 @@ function translate(message: string) {
     return "El registro de cuentas nuevas está desactivado en Supabase.";
   }
   if (text.includes("invalid") && text.includes("email")) return "Ese correo no es válido.";
-  // Unknown error: keep the real message in the server logs (Vercel → Logs) for diagnosis.
+  if (ERRORS[message]) return ERRORS[message];
+  // Unknown error: show it (Supabase auth messages contain no secrets) and log it for diagnosis.
   console.error("[auth] Supabase error:", message);
-  return ERRORS[message] ?? "No pudimos completar la operación. Inténtalo de nuevo.";
+  return `No pudimos completar la operación (${message}).`;
 }
 
 /** Only allow redirects to paths inside the app (avoid open redirects). */
