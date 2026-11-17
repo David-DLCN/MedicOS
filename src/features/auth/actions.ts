@@ -16,8 +16,20 @@ const ERRORS: Record<string, string> = {
 };
 
 function translate(message: string) {
-  if (message.toLowerCase().includes("password should be")) return "La contraseña debe tener al menos 8 caracteres.";
-  if (message.toLowerCase().includes("rate limit")) return "Demasiados intentos. Espera unos minutos y vuelve a intentarlo.";
+  const text = message.toLowerCase();
+  if (text.includes("password should be")) return "La contraseña debe tener al menos 8 caracteres.";
+  if (text.includes("rate limit")) {
+    return "Se alcanzó el límite de correos o de intentos. Espera unos minutos y vuelve a intentarlo.";
+  }
+  if (text.includes("sending confirmation email") || text.includes("not authorized")) {
+    return "No pudimos enviar el correo de confirmación. El correo gratuito de Supabase solo llega a los miembros del proyecto: desactiva «Confirm email» o configura un SMTP propio.";
+  }
+  if (text.includes("signups not allowed") || text.includes("signup is disabled")) {
+    return "El registro de cuentas nuevas está desactivado en Supabase.";
+  }
+  if (text.includes("invalid") && text.includes("email")) return "Ese correo no es válido.";
+  // Unknown error: keep the real message in the server logs (Vercel → Logs) for diagnosis.
+  console.error("[auth] Supabase error:", message);
   return ERRORS[message] ?? "No pudimos completar la operación. Inténtalo de nuevo.";
 }
 
