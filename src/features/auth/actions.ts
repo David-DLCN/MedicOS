@@ -24,6 +24,9 @@ function translate(message: string) {
   if (text.includes("sending confirmation email") || text.includes("not authorized")) {
     return "No pudimos enviar el correo de confirmación. El correo gratuito de Supabase solo llega a los miembros del proyecto: desactiva «Confirm email» o configura un SMTP propio.";
   }
+  if (text.includes("email logins are disabled") || text.includes("email signups are disabled")) {
+    return "El acceso con correo está desactivado en Supabase: actívalo en Authentication → Sign In / Providers → Email.";
+  }
   if (text.includes("signups not allowed") || text.includes("signup is disabled")) {
     return "El registro de cuentas nuevas está desactivado en Supabase.";
   }
